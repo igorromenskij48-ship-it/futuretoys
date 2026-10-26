@@ -7,25 +7,57 @@
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background: #0a0a12; color: #fff; }
-    header { padding: 20px 5%; background: #151525; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
-    .logo { font-size: 24px; font-weight: bold; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
-    .btn { padding: 10px 20px; background: #00f3ff; color: #0a0a12; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-    .btn:hover { box-shadow: 0 0 20px #00f3ff; }
-    .hero { text-align: center; padding: 100px 20px; }
+    
+    /* Шапка */
+    header { padding: 15px 5%; background: rgba(21, 21, 37, 0.95); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); }
+    .logo { font-size: 24px; font-weight: bold; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; cursor: pointer; }
+    
+    /* Навигация */
+    nav { display: flex; gap: 25px; }
+    nav a { color: #a0a0b0; text-decoration: none; font-weight: 600; transition: 0.3s; }
+    nav a:hover { color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
+    
+    /* Кнопки справа */
+    .auth-buttons { display: flex; gap: 10px; }
+    .btn { padding: 8px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; border: none; font-size: 14px; }
+    .btn-login { background: transparent; color: #fff; border: 1px solid #a0a0b0; }
+    .btn-login:hover { border-color: #00f3ff; color: #00f3ff; }
+    .btn-register { background: #bc13fe; color: #fff; }
+    .btn-register:hover { box-shadow: 0 0 20px #bc13fe; transform: translateY(-2px); }
+    .btn-cart { background: #00f3ff; color: #0a0a12; position: relative; }
+    .btn-cart:hover { box-shadow: 0 0 20px #00f3ff; }
+    
+    /* Главный экран */
+    .hero { text-align: center; padding: 160px 20px 100px; }
     .hero h1 { font-size: 48px; color: #00f3ff; margin-bottom: 20px; }
     .hero p { color: #a0a0b0; font-size: 18px; margin-bottom: 30px; }
+    
+    /* Каталог */
     .catalog { padding: 40px 5%; }
+    .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
     .card { background: #151525; border-radius: 15px; padding: 20px; border: 1px solid #333; text-align: center; transition: 0.3s; }
     .card:hover { border-color: #00f3ff; transform: translateY(-5px); }
+    
+    /* ВАЖНО: Картинки теперь берутся из ваших файлов */
     .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border-bottom: 2px solid #00f3ff; }
+    
     .card h3 { margin: 15px 0 5px; font-size: 18px; }
     .price { color: #bc13fe; font-size: 20px; font-weight: bold; margin: 10px 0; }
     .add-btn { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .add-btn:hover { background: #00f3ff; color: #0a0a12; box-shadow: 0 0 15px #00f3ff; }
     
+    /* Отзывы */
+    .reviews { padding: 60px 5%; background: #0d0d18; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+    .review-card { background: #151525; padding: 25px; border-radius: 15px; border: 1px solid #333; }
+    .stars { color: #ffd700; font-size: 20px; margin-bottom: 10px; }
+    .review-text { color: #a0a0b0; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-style: italic; }
+    .review-author { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: #bc13fe; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 18px; }
+    
     /* Корзина */
-    .cart-panel { position: fixed; right: -100%; top: 0; width: 100%; max-width: 400px; height: 100%; background: #151525; padding: 20px; border-left: 1px solid #00f3ff; transition: 0.4s; z-index: 200; display: flex; flex-direction: column; }
+    .cart-panel { position: fixed; right: -100%; top: 0; width: 100%; max-width: 400px; height: 100%; background: #151525; padding: 20px; border-left: 1px solid #00f3ff; transition: 0.4s; z-index: 200; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
     .cart-panel.open { right: 0; }
     .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
     .cart-header h2 { color: #00f3ff; margin: 0; }
@@ -35,45 +67,118 @@
     .cart-total { font-size: 20px; color: #bc13fe; font-weight: bold; margin: 20px 0; text-align: right; }
     .checkout-btn { width: 100%; padding: 15px; background: #00f3ff; color: #0a0a12; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; }
     
-    /* Окно оплаты */
-    .payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 300; justify-content: center; align-items: center; padding: 20px; }
-    .payment-content { background: #151525; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #00f3ff; text-align: center; }
+    /* Модальные окна */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 300; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: #151525; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #00f3ff; text-align: center; position: relative; }
+    .close-modal { position: absolute; top: 10px; right: 15px; background: none; color: #a0a0b0; border: none; font-size: 24px; cursor: pointer; }
+    .close-modal:hover { color: #00f3ff; }
+    
     .code-box { background: rgba(188,19,254,0.1); border: 2px dashed #bc13fe; padding: 15px; border-radius: 10px; font-size: 24px; font-weight: bold; color: #bc13fe; margin-bottom: 15px; letter-spacing: 2px; }
     .sum-box { background: rgba(0,243,255,0.1); border: 1px solid #00f3ff; padding: 10px; border-radius: 10px; font-size: 20px; font-weight: bold; color: #00f3ff; margin-bottom: 20px; }
     .instructions { text-align: left; font-size: 14px; color: #a0a0b0; line-height: 1.5; margin-bottom: 20px; }
     .instructions b { color: white; }
+    
     input { width: 100%; padding: 12px; margin-bottom: 10px; background: #0a0a12; border: 1px solid #333; color: white; border-radius: 5px; }
-    .confirm-btn { width: 100%; padding: 15px; background: #bc13fe; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    input:focus { border-color: #00f3ff; outline: none; }
+    .confirm-btn { width: 100%; padding: 15px; background: #00f3ff; color: #0a0a12; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+    .confirm-btn:hover { box-shadow: 0 0 20px #00f3ff; }
+    .reg-btn { background: #bc13fe; color: white; }
+    .reg-btn:hover { box-shadow: 0 0 20px #bc13fe; }
     
     footer { text-align: center; padding: 30px; color: #555; border-top: 1px solid #333; margin-top: 50px; }
 </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo">FutureToys</div>
-    <button class="btn" onclick="toggleCart()">Корзина (<span id="cartCount">0</span>)</button>
-</div>
+<!-- Шапка -->
+<header>
+    <div class="logo" onclick="window.scrollTo(0,0)">FutureToys</div>
+    <nav>
+        <a href="#about">О нас</a>
+        <a href="#catalog">Игрушки</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="auth-buttons">
+        <button class="btn btn-login" onclick="openAuth('login')">Вход</button>
+        <button class="btn btn-register" onclick="openAuth('register')">Регистрация</button>
+        <button class="btn btn-cart" onclick="toggleCart()">Корзина (<span id="cartCount">0</span>)</button>
+    </div>
+</header>
 
+<!-- Главный экран -->
 <div class="hero">
     <h1>ИГРУШКИ ИЗ БУДУЩЕГО</h1>
     <p>Уникальные 3D-модели, напечатанные на 3D-принтере.</p>
-    <button class="btn" onclick="document.getElementById('catalog').scrollIntoView()">Смотреть каталог</button>
+    <button class="btn btn-register" onclick="document.getElementById('catalog').scrollIntoView()">Смотреть каталог</button>
 </div>
 
+<!-- О нас -->
+<div id="about" style="text-align: center; padding: 50px 20px; background: #151525;">
+    <h2 style="color: #00f3ff; margin-bottom: 15px;">О нас</h2>
+    <p style="color: #a0a0b0; max-width: 600px; margin: 0 auto;">Мы создаем уникальные 3D-игрушки из экологичного пластика. Каждая модель — это результат кропотливой работы дизайнеров и высокоточных принтеров.</p>
+</div>
+
+<!-- Каталог -->
 <div class="catalog" id="catalog">
+    <h2 class="section-title">Наш <span style="color: #bc13fe;">Каталог</span></h2>
     <div class="grid">
-        <!-- 8 ТОВАРОВ -->
-        <div class="card"><img src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=400"><h3>Однокликерный фиджет</h3><div class="price">120 ₽</div><button class="add-btn" onclick="addToCart('Однокликерный фиджет', 120)">Добавить</button></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=400"><h3>Скребок</h3><div class="price">50 ₽</div><button class="add-btn" onclick="addToCart('Скребок', 50)">Добавить</button></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400"><h3>Сюрикен</h3><div class="price">70 ₽</div><button class="add-btn" onclick="addToCart('Сюрикен', 70)">Добавить</button></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400"><h3>Кастет</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Кастет', 510)">Добавить</button></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400"><h3>Кубик антистресс</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Кубик антистресс', 290)">Добавить</button></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400"><h3>Брелок Мишка</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Брелок Мишка', 290)">Добавить</button></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400"><h3>Спиральный фиджи конус</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Спиральный конус', 510)">Добавить</button></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=400"><h3>Трехкликерный фиджет</h3><div class="price">190 ₽</div><button class="add-btn" onclick="addToCart('Трехкликерный фиджет', 190)">Добавить</button></div>
+        <!-- 8 ТОВАРОВ С ВАШИМИ ФОТО -->
+        <div class="card"><img src="1.jpg"><h3>Однокликерный фиджет</h3><div class="price">120 ₽</div><button class="add-btn" onclick="addToCart('Однокликерный фиджет', 120)">Добавить</button></div>
+        
+        <div class="card"><img src="2.jpg"><h3>Скребок</h3><div class="price">50 ₽</div><button class="add-btn" onclick="addToCart('Скребок', 50)">Добавить</button></div>
+        
+        <div class="card"><img src="3.jpg"><h3>Сюрикен</h3><div class="price">70 ₽</div><button class="add-btn" onclick="addToCart('Сюрикен', 70)">Добавить</button></div>
+        
+        <div class="card"><img src="4.jpg"><h3>Кастет</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Кастет', 510)">Добавить</button></div>
+        
+        <div class="card"><img src="5.jpg"><h3>Кубик антистресс</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Кубик антистресс', 290)">Добавить</button></div>
+        
+        <div class="card"><img src="6.jpg"><h3>Брелок Мишка</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Брелок Мишка', 290)">Добавить</button></div>
+        
+        <div class="card"><img src="7.jpg"><h3>Спиральный фиджи конус</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Спиральный конус', 510)">Добавить</button></div>
+        
+        <div class="card"><img src="8.jpg"><h3>Трехкликерный фиджет</h3><div class="price">190 ₽</div><button class="add-btn" onclick="addToCart('Трехкликерный фиджет', 190)">Добавить</button></div>
     </div>
 </div>
+
+<!-- Отзывы -->
+<div class="reviews" id="reviews">
+    <h2 class="section-title">Отзывы <span style="color: #bc13fe;">клиентов</span></h2>
+    <div class="reviews-grid">
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <div class="review-text">"Заказывал фиджет, качество просто супер! Пластик гладкий, приятно держать в руках. Доставили за 2 дня."</div>
+            <div class="review-author">
+                <div class="avatar">А</div>
+                <div><b>Алексей</b><br><small style="color: #555;">Москва</small></div>
+            </div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <div class="review-text">"Очень крутые 3D-игрушки. Взяла мишку на брелок, все друзья спрашивают, где купила. Спасибо!"</div>
+            <div class="review-author">
+                <div class="avatar">М</div>
+                <div><b>Мария</b><br><small style="color: #555;">СПБ</small></div>
+            </div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★☆</div>
+            <div class="review-text">"Сюрикен огонь. Единственное, хотелось бы побольше цветов на выбор. Но в целом очень доволен."</div>
+            <div class="review-author">
+                <div class="avatar">Д</div>
+                <div><b>Дмитрий</b><br><small style="color: #555;">Казань</small></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Подвал -->
+<footer id="contacts">
+    &copy; 2024 Игрушки из Будущего.<br>
+    📧 <a href="mailto:igorromenskij48@gmail.com" style="color: #00f3ff;">igorromenskij48@gmail.com</a> | 
+    📱 <span style="color: #00f3ff;">+7 (926) 297-81-24</span>
+</footer>
 
 <!-- Корзина -->
 <div class="cart-panel" id="cartPanel">
@@ -84,8 +189,9 @@
 </div>
 
 <!-- Окно оплаты -->
-<div class="payment-modal" id="paymentModal">
-    <div class="payment-content">
+<div class="modal" id="paymentModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="document.getElementById('paymentModal').style.display='none'">&times;</button>
         <h2 style="color:#00f3ff; margin-top:0;">Оплата</h2>
         <p style="color: #a0a0b0; margin-bottom: 5px;">Код заказа:</p>
         <div class="code-box" id="orderCode">FT-0000</div>
@@ -103,11 +209,25 @@
     </div>
 </div>
 
-<footer>
-    &copy; 2024 Игрушки из Будущего. Почта: igorromenskij48@gmail.com | Тел: +7 (926) 297-81-24
-</footer>
+<!-- Окно Входа / Регистрации -->
+<div class="modal" id="authModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="document.getElementById('authModal').style.display='none'">&times;</button>
+        <h2 id="authTitle" style="color:#00f3ff; margin-top:0;">Вход</h2>
+        
+        <div id="registerFields" style="display: none;">
+            <input type="text" id="regName" placeholder="Ваше Имя" required>
+        </div>
+        
+        <input type="email" id="authEmail" placeholder="Ваш Email" required>
+        <input type="password" id="authPassword" placeholder="Пароль" required>
+        
+        <button class="confirm-btn" id="authBtn" onclick="submitAuth()">Войти</button>
+    </div>
+</div>
 
 <script>
+/* --- Корзина --- */
 let cart = [];
 let currentOrderCode = '';
 
@@ -167,6 +287,37 @@ function confirmPayment() {
     document.getElementById('clientName').value = '';
     document.getElementById('clientPhone').value = '';
 }
+
+/* --- Вход / Регистрация --- */
+function openAuth(type) {
+    document.getElementById('authModal').style.display = 'flex';
+    if (type === 'login') {
+        document.getElementById('authTitle').innerText = 'Вход';
+        document.getElementById('registerFields').style.display = 'none';
+        document.getElementById('authBtn').innerText = 'Войти';
+        document.getElementById('authBtn').classList.remove('reg-btn');
+    } else {
+        document.getElementById('authTitle').innerText = 'Регистрация';
+        document.getElementById('registerFields').style.display = 'block';
+        document.getElementById('authBtn').innerText = 'Зарегистрироваться';
+        document.getElementById('authBtn').classList.add('reg-btn');
+    }
+}
+
+function submitAuth() {
+    let email = document.getElementById('authEmail').value.trim();
+    let pass = document.getElementById('authPassword').value.trim();
+    if (email === '' || pass === '') { alert('Заполните Email и Пароль!'); return; }
+    
+    let name = document.getElementById('regName') ? document.getElementById('regName').value.trim() : '';
+    alert(name ? `Добро пожаловать, ${name}!` : 'Вы успешно вошли!');
+    
+    document.getElementById('authModal').style.display = 'none';
+    document.getElementById('authEmail').value = '';
+    document.getElementById('authPassword').value = '';
+    if (document.getElementById('regName')) document.getElementById('regName').value = '';
+}
 </script>
+
 </body>
 </html>
