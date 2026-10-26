@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FutureToys | Игрушки из Будущего</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background: #0a0a12; color: #fff; }
+    header { padding: 20px 5%; background: #151525; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 24px; font-weight: bold; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
+    .btn { padding: 10px 20px; background: #00f3ff; color: #0a0a12; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .btn:hover { box-shadow: 0 0 20px #00f3ff; }
+    .hero { text-align: center; padding: 100px 20px; }
+    .hero h1 { font-size: 48px; color: #00f3ff; margin-bottom: 20px; }
+    .hero p { color: #a0a0b0; font-size: 18px; margin-bottom: 30px; }
+    .catalog { padding: 40px 5%; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    .card { background: #151525; border-radius: 15px; padding: 20px; border: 1px solid #333; text-align: center; transition: 0.3s; }
+    .card:hover { border-color: #00f3ff; transform: translateY(-5px); }
+    .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border-bottom: 2px solid #00f3ff; }
+    .card h3 { margin: 15px 0 5px; font-size: 18px; }
+    .price { color: #bc13fe; font-size: 20px; font-weight: bold; margin: 10px 0; }
+    .add-btn { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    .add-btn:hover { background: #00f3ff; color: #0a0a12; box-shadow: 0 0 15px #00f3ff; }
+    
+    /* Корзина */
+    .cart-panel { position: fixed; right: -100%; top: 0; width: 100%; max-width: 400px; height: 100%; background: #151525; padding: 20px; border-left: 1px solid #00f3ff; transition: 0.4s; z-index: 200; display: flex; flex-direction: column; }
+    .cart-panel.open { right: 0; }
+    .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
+    .cart-header h2 { color: #00f3ff; margin: 0; }
+    .close-cart { background: none; color: white; border: none; font-size: 24px; cursor: pointer; }
+    .cart-list { flex-grow: 1; overflow-y: auto; padding: 0; list-style: none; }
+    .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .cart-total { font-size: 20px; color: #bc13fe; font-weight: bold; margin: 20px 0; text-align: right; }
+    .checkout-btn { width: 100%; padding: 15px; background: #00f3ff; color: #0a0a12; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; }
+    
+    /* Окно оплаты */
+    .payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 300; justify-content: center; align-items: center; padding: 20px; }
+    .payment-content { background: #151525; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #00f3ff; text-align: center; }
+    .code-box { background: rgba(188,19,254,0.1); border: 2px dashed #bc13fe; padding: 15px; border-radius: 10px; font-size: 24px; font-weight: bold; color: #bc13fe; margin-bottom: 15px; letter-spacing: 2px; }
+    .sum-box { background: rgba(0,243,255,0.1); border: 1px solid #00f3ff; padding: 10px; border-radius: 10px; font-size: 20px; font-weight: bold; color: #00f3ff; margin-bottom: 20px; }
+    .instructions { text-align: left; font-size: 14px; color: #a0a0b0; line-height: 1.5; margin-bottom: 20px; }
+    .instructions b { color: white; }
+    input { width: 100%; padding: 12px; margin-bottom: 10px; background: #0a0a12; border: 1px solid #333; color: white; border-radius: 5px; }
+    .confirm-btn { width: 100%; padding: 15px; background: #bc13fe; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    
+    footer { text-align: center; padding: 30px; color: #555; border-top: 1px solid #333; margin-top: 50px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">FutureToys</div>
+    <button class="btn" onclick="toggleCart()">Корзина (<span id="cartCount">0</span>)</button>
+</div>
+
+<div class="hero">
+    <h1>ИГРУШКИ ИЗ БУДУЩЕГО</h1>
+    <p>Уникальные 3D-модели, напечатанные на 3D-принтере.</p>
+    <button class="btn" onclick="document.getElementById('catalog').scrollIntoView()">Смотреть каталог</button>
+</div>
+
+<div class="catalog" id="catalog">
+    <div class="grid">
+        <!-- 8 ТОВАРОВ -->
+        <div class="card"><img src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=400"><h3>Однокликерный фиджет</h3><div class="price">120 ₽</div><button class="add-btn" onclick="addToCart('Однокликерный фиджет', 120)">Добавить</button></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=400"><h3>Скребок</h3><div class="price">50 ₽</div><button class="add-btn" onclick="addToCart('Скребок', 50)">Добавить</button></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400"><h3>Сюрикен</h3><div class="price">70 ₽</div><button class="add-btn" onclick="addToCart('Сюрикен', 70)">Добавить</button></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400"><h3>Кастет</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Кастет', 510)">Добавить</button></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400"><h3>Кубик антистресс</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Кубик антистресс', 290)">Добавить</button></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400"><h3>Брелок Мишка</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Брелок Мишка', 290)">Добавить</button></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400"><h3>Спиральный фиджи конус</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Спиральный конус', 510)">Добавить</button></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=400"><h3>Трехкликерный фиджет</h3><div class="price">190 ₽</div><button class="add-btn" onclick="addToCart('Трехкликерный фиджет', 190)">Добавить</button></div>
+    </div>
+</div>
+
+<!-- Корзина -->
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-header"><h2>Корзина</h2><button class="close-cart" onclick="toggleCart()">&times;</button></div>
+    <ul class="cart-list" id="cartList"></ul>
+    <div class="cart-total">Итого: <span id="total">0</span> ₽</div>
+    <button class="checkout-btn" onclick="openPayment()">Оформить заказ</button>
+</div>
+
+<!-- Окно оплаты -->
+<div class="payment-modal" id="paymentModal">
+    <div class="payment-content">
+        <h2 style="color:#00f3ff; margin-top:0;">Оплата</h2>
+        <p style="color: #a0a0b0; margin-bottom: 5px;">Код заказа:</p>
+        <div class="code-box" id="orderCode">FT-0000</div>
+        <p style="color: #a0a0b0; margin-bottom: 5px;">Сумма:</p>
+        <div class="sum-box" id="orderSum">0 ₽</div>
+        <div class="instructions">
+            <b>Инструкция:</b><br>
+            1. Переведите сумму на номер: <b>+7 (926) 297-81-24</b><br>
+            2. В комментарии укажите код: <b id="codeInstr">FT-0000</b><br>
+            3. Заполните данные.
+        </div>
+        <input type="text" id="clientName" placeholder="Ваше Имя" required>
+        <input type="tel" id="clientPhone" placeholder="Ваш Телефон" required>
+        <button class="confirm-btn" onclick="confirmPayment()">✅ Я оплатил</button>
+    </div>
+</div>
+
+<footer>
+    &copy; 2024 Игрушки из Будущего. Почта: igorromenskij48@gmail.com | Тел: +7 (926) 297-81-24
+</footer>
+
+<script>
+let cart = [];
+let currentOrderCode = '';
+
+function generateOrderCode() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    let code = 'FT-';
+    for (let i = 0; i < 2; i++) code += letters.charAt(Math.floor(Math.random() * letters.length));
+    for (let i = 0; i < 4; i++) code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    return code;
+}
+
+function addToCart(name, price) {
+    let item = cart.find(i => i.name === name);
+    if (item) { item.qty++; } else { cart.push({name, price, qty: 1}); }
+    updateCart();
+    document.getElementById('cartPanel').classList.add('open');
+}
+
+function updateCart() {
+    let list = document.getElementById('cartList');
+    let totalSum = 0;
+    let count = 0;
+    list.innerHTML = '';
+    cart.forEach((item) => {
+        totalSum += item.price * item.qty;
+        count += item.qty;
+        list.innerHTML += `<li class="cart-item"><span>${item.name} (x${item.qty})</span><span>${item.price * item.qty} ₽</span></li>`;
+    });
+    document.getElementById('total').innerText = totalSum;
+    document.getElementById('cartCount').innerText = count;
+}
+
+function toggleCart() {
+    document.getElementById('cartPanel').classList.toggle('open');
+}
+
+function openPayment() {
+    if (cart.length === 0) { alert('Корзина пуста!'); return; }
+    currentOrderCode = generateOrderCode();
+    document.getElementById('orderCode').innerText = currentOrderCode;
+    document.getElementById('codeInstr').innerText = currentOrderCode;
+    let totalSum = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('orderSum').innerText = totalSum + ' ₽';
+    document.getElementById('paymentModal').style.display = 'flex';
+    document.getElementById('cartPanel').classList.remove('open');
+}
+
+function confirmPayment() {
+    let name = document.getElementById('clientName').value.trim();
+    let phone = document.getElementById('clientPhone').value.trim();
+    if (name === '' || phone === '') { alert('Заполните Имя и Телефон!'); return; }
+    alert(`Спасибо! Заказ ${currentOrderCode} принят.`);
+    cart = [];
+    updateCart();
+    document.getElementById('paymentModal').style.display = 'none';
+    document.getElementById('clientName').value = '';
+    document.getElementById('clientPhone').value = '';
+}
+</script>
+</body>
+</html>
