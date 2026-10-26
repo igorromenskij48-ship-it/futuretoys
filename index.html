@@ -1,562 +1,576 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игрушки из Будущего | 3D Печать</title>
-    <style>
-        :root {
-            --primary-neon: #00f3ff;
-            --secondary-neon: #bc13fe;
-            --bg-dark: #0a0a12;
-            --bg-card: #151525;
-            --text-main: #ffffff;
-            --text-muted: #a0a0b0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FutureToys | Кибер-Магазин</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background: #05050a; color: #fff; overflow-x: hidden; position: relative; }
+    
+    /* Фон */
+    .bg-anim { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none; }
+    .bg-anim div { position: absolute; width: 2px; height: 100px; background: linear-gradient(to bottom, transparent, #00f3ff); animation: fall linear infinite; }
+    @keyframes fall { to { transform: translateY(100vh); } }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
+    /* Шапка */
+    header { padding: 15px 5%; background: rgba(10, 10, 20, 0.9); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); }
+    .logo { font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900; color: #00f3ff; text-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff; cursor: pointer; letter-spacing: 2px; }
+    
+    nav { display: flex; gap: 25px; }
+    nav a { color: #a0a0b0; text-decoration: none; font-weight: 600; transition: 0.3s; position: relative; }
+    nav a:hover { color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
+    
+    .auth-buttons { display: flex; gap: 10px; align-items: center; }
+    .btn { padding: 10px 22px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; border: none; font-size: 14px; }
+    .btn-login { background: transparent; color: #fff; border: 1px solid #a0a0b0; }
+    .btn-login:hover { border-color: #00f3ff; color: #00f3ff; box-shadow: 0 0 15px rgba(0,243,255,0.5); }
+    .btn-register { background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; box-shadow: 0 0 15px rgba(188,19,254,0.5); }
+    .btn-register:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(188,19,254,0.8); }
+    .btn-cart { background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; position: relative; }
+    .btn-cart:hover { box-shadow: 0 0 25px rgba(0,243,255,0.8); }
+    .btn-orders { background: transparent; color: #ffd700; border: 1px solid #ffd700; }
+    .btn-orders:hover { background: rgba(255,215,0,0.1); box-shadow: 0 0 15px rgba(255,215,0,0.5); }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: 0.3s;
-        }
+    .user-greeting { color: #00f3ff; font-weight: bold; margin-right: 10px; text-shadow: 0 0 10px #00f3ff; }
 
-        /* --- Шапка (Header) --- */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background: rgba(10, 10, 18, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-            z-index: 1000;
-        }
+    /* Главный экран */
+    .hero { text-align: center; padding: 160px 20px 100px; }
+    .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 52px; color: #00f3ff; margin-bottom: 20px; text-shadow: 0 0 20px #00f3ff, 0 0 40px #bc13fe; animation: flicker 3s infinite alternate; }
+    @keyframes flicker { 0% { opacity: 1; } 90% { opacity: 1; } 95% { opacity: 0.6; } 100% { opacity: 1; } }
+    .hero p { color: #a0a0b0; font-size: 18px; margin-bottom: 30px; }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer;
-        }
+    /* Счетчики */
+    .counters { display: flex; justify-content: space-around; padding: 40px 5%; background: #080810; border-top: 1px solid #1a1a2e; border-bottom: 1px solid #1a1a2e; flex-wrap: wrap; gap: 20px; }
+    .counter-box { text-align: center; }
+    .counter-num { font-size: 36px; font-weight: bold; color: #00f3ff; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 15px rgba(0,243,255,0.4); }
+    .counter-label { color: #a0a0b0; font-size: 14px; text-transform: uppercase; margin-top: 5px; }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
+    /* Преимущества */
+    .features { display: flex; justify-content: space-around; padding: 50px 5%; flex-wrap: wrap; gap: 20px; background: #0a0a14; }
+    .feature { text-align: center; max-width: 200px; background: #0f0f1a; padding: 20px; border-radius: 15px; border: 1px solid #333; transition: 0.3s; }
+    .feature:hover { border-color: #bc13fe; transform: translateY(-5px); }
+    .feature-icon { font-size: 36px; margin-bottom: 10px; }
+    .feature h4 { color: #00f3ff; margin-bottom: 5px; }
+    .feature p { color: #a0a0b0; font-size: 14px; }
+    
+    /* Каталог */
+    .catalog { padding: 40px 5%; }
+    .section-title { text-align: center; font-size: 36px; margin-bottom: 50px; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+    
+    /* Карточки */
+    .card { background: #0f0f1a; border-radius: 15px; padding: 20px; border: 1px solid #333; text-align: center; transition: 0.4s; opacity: 0; transform: translateY(30px); animation: fadeUp 0.6s forwards; position: relative; }
+    .card:nth-child(1) { animation-delay: 0.1s; } .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; } .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; } .card:nth-child(6) { animation-delay: 0.6s; }
+    .card:nth-child(7) { animation-delay: 0.7s; } .card:nth-child(8) { animation-delay: 0.8s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    
+    .card:hover { border-color: #00f3ff; transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0,243,255,0.2); }
+    .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border-bottom: 2px solid #333; transition: 0.4s; }
+    .card:hover img { border-color: #00f3ff; transform: scale(1.05); }
+    
+    .card h3 { margin: 15px 0 5px; font-size: 18px; }
+    .price { color: #bc13fe; font-size: 22px; font-weight: bold; margin: 10px 0; text-shadow: 0 0 10px rgba(188,19,254,0.4); }
+    .add-btn { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    .add-btn:hover { background: rgba(0,243,255,0.1); box-shadow: 0 0 20px rgba(0,243,255,0.4); }
+    
+    /* Сердечко (Избранное) */
+    .fav-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); border: none; color: #fff; font-size: 20px; cursor: pointer; width: 35px; height: 35px; border-radius: 50%; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+    .fav-btn:hover { background: #bc13fe; }
+    .fav-btn.active { color: #ff4d4d; }
 
-        nav a:hover {
-            color: var(--primary-neon);
-            text-shadow: 0 0 10px var(--primary-neon);
-        }
+    /* Отзывы */
+    .reviews { padding: 80px 5%; background: #080810; border-top: 1px solid #1a1a2e; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto; }
+    .review-card { background: #0f0f1a; padding: 25px; border-radius: 15px; border: 1px solid #333; transition: 0.3s; }
+    .review-card:hover { border-color: #bc13fe; box-shadow: 0 0 20px rgba(188,19,254,0.2); }
+    .stars { color: #ffd700; font-size: 20px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+    .review-text { color: #a0a0b0; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-style: italic; }
+    .review-author { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(45deg, #bc13fe, #00f3ff); display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 18px; color: #000; }
+    
+    /* Подписка */
+    .subscribe { padding: 60px 5%; text-align: center; background: linear-gradient(135deg, #0f0f1a, #05050a); border-top: 1px solid #bc13fe; }
+    .subscribe h2 { font-family: 'Orbitron'; color: #00f3ff; font-size: 32px; margin-bottom: 15px; }
+    .subscribe p { color: #a0a0b0; margin-bottom: 30px; }
+    .sub-form { display: flex; max-width: 500px; margin: 0 auto; gap: 10px; }
+    .sub-form input { flex-grow: 1; padding: 15px; background: #05050a; border: 1px solid #333; border-radius: 8px; color: #fff; outline: none; }
+    .sub-form input:focus { border-color: #00f3ff; }
+    .sub-form button { padding: 15px 30px; background: #bc13fe; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .sub-form button:hover { box-shadow: 0 0 20px #bc13fe; }
 
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
+    /* Корзина / Заказы */
+    .panel { position: fixed; right: -100%; top: 0; width: 100%; max-width: 420px; height: 100%; background: #0f0f1a; padding: 25px; border-left: 1px solid #00f3ff; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 200; display: flex; flex-direction: column; box-shadow: -20px 0 50px rgba(0,0,0,0.8); }
+    .panel.open { right: 0; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
+    .panel-header h2 { color: #00f3ff; margin: 0; font-family: 'Orbitron', sans-serif; }
+    .panel-header.orders h2 { color: #ffd700; }
+    .close-panel { background: none; color: white; border: none; font-size: 28px; cursor: pointer; transition: 0.3s; }
+    .close-panel:hover { color: #00f3ff; transform: rotate(90deg); }
+    
+    .cart-list, .orders-list { flex-grow: 1; overflow-y: auto; padding: 0; list-style: none; }
+    .cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; font-size: 16px; }
+    .order-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 3px solid #ffd700; }
+    .order-item h4 { color: #ffd700; margin-bottom: 5px; font-family: 'Orbitron'; }
+    .order-item p { color: #a0a0b0; font-size: 14px; margin-bottom: 5px; }
+    
+    .cart-total { font-size: 22px; color: #bc13fe; font-weight: bold; margin: 20px 0; text-align: right; font-family: 'Orbitron', sans-serif; }
+    
+    /* Промокод */
+    .promo-box { display: flex; gap: 10px; margin-bottom: 15px; }
+    .promo-box input { flex-grow: 1; padding: 10px; background: #05050a; border: 1px solid #333; border-radius: 5px; color: #fff; }
+    .promo-box button { padding: 10px 15px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    .promo-box button:hover { background: #555; }
 
-        .btn {
-            padding: 8px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.3s;
-        }
+    .checkout-btn { width: 100%; padding: 18px; background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; border: none; border-radius: 10px; font-weight: bold; font-size: 18px; cursor: pointer; transition: 0.3s; }
+    .checkout-btn:hover { box-shadow: 0 0 30px rgba(0,243,255,0.6); }
 
-        .btn-login {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--text-muted);
-        }
+    /* Модальные окна */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 300; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+    .modal-content { background: #0f0f1a; padding: 35px; border-radius: 20px; width: 100%; max-width: 450px; border: 1px solid #00f3ff; text-align: center; position: relative; box-shadow: 0 0 50px rgba(0,243,255,0.2); }
+    
+    .close-modal { position: absolute; top: 15px; right: 20px; background: none; color: #a0a0b0; border: none; font-size: 28px; cursor: pointer; transition: 0.3s; }
+    .close-modal:hover { color: #ff4d4d; transform: rotate(90deg); }
+    
+    .code-box { background: rgba(188,19,254,0.1); border: 2px dashed #bc13fe; padding: 15px; border-radius: 10px; font-size: 26px; font-weight: bold; color: #bc13fe; margin-bottom: 15px; letter-spacing: 3px; font-family: 'Orbitron', sans-serif; }
+    .sum-box { background: rgba(0,243,255,0.1); border: 1px solid #00f3ff; padding: 12px; border-radius: 10px; font-size: 22px; font-weight: bold; color: #00f3ff; margin-bottom: 20px; }
+    .instructions { text-align: left; font-size: 14px; color: #a0a0b0; line-height: 1.6; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; }
+    .instructions b { color: #fff; }
+    
+    input { width: 100%; padding: 14px; margin-bottom: 12px; background: #05050a; border: 1px solid #333; color: white; border-radius: 8px; font-size: 15px; transition: 0.3s; }
+    input:focus { border-color: #00f3ff; outline: none; }
+    
+    .confirm-btn { width: 100%; padding: 16px; background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+    .confirm-btn:hover { box-shadow: 0 0 30px rgba(188,19,254,0.8); }
 
-        .btn-login:hover {
-            border-color: var(--primary-neon);
-            color: var(--primary-neon);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-        }
+    /* Тосты (уведомления) */
+    .toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+    .toast { background: rgba(15, 15, 26, 0.95); border: 1px solid #00f3ff; color: #00f3ff; padding: 15px 25px; border-radius: 10px; font-weight: bold; box-shadow: 0 0 20px rgba(0,243,255,0.3); animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards; }
+    @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateY(20px); } }
 
-        .btn-register {
-            background: linear-gradient(45deg, var(--secondary-neon), #7a00ff);
-            color: white;
-            border: none;
-            box-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
-        }
+    /* Кнопка наверх */
+    .up-btn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #00f3ff; color: #05050a; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 99; box-shadow: 0 0 20px rgba(0,243,255,0.5); transition: 0.3s; }
+    .up-btn:hover { transform: translateY(-5px); }
+    .up-btn.show { display: flex; }
 
-        .btn-register:hover {
-            box-shadow: 0 0 25px rgba(188, 19, 254, 0.8);
-            transform: translateY(-2px);
-        }
-
-        /* --- Главный экран (Hero) --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            background: radial-gradient(circle at 50% 50%, rgba(21, 21, 37, 1) 0%, rgba(10, 10, 18, 1) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Анимированный фон (сетка) */
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
-            animation: gridMove 10s linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes gridMove {
-            0% { top: -100%; }
-            100% { top: 0%; }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        h1 {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
-        }
-
-        .neon-text {
-            color: var(--primary-neon);
-            text-shadow: 0 0 10px var(--primary-neon), 0 0 20px var(--primary-neon);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
-
-        .cta-button {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            background: transparent;
-            border: 2px solid var(--primary-neon);
-            color: var(--primary-neon);
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-button:hover {
-            background: var(--primary-neon);
-            color: var(--bg-dark);
-            box-shadow: 0 0 30px var(--primary-neon);
-        }
-
-        /* --- Секция "Игрушки" (Каталог) --- */
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            margin-top: 100px;
-        }
-
-        .catalog {
-            padding: 50px 5%;
-            background: var(--bg-dark);
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary-neon);
-            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
-        }
-
-        .card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-bottom: 2px solid var(--primary-neon);
-        }
-
-        .card-content {
-            padding: 20px;
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
-
-        .card-price {
-            color: var(--secondary-neon);
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-        }
-
-        .card-btn {
-            display: inline-block;
-            width: 100%;
-            padding: 10px;
-            text-align: center;
-            background: rgba(0, 243, 255, 0.1);
-            color: var(--primary-neon);
-            border: 1px solid var(--primary-neon);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .card-btn:hover {
-            background: var(--primary-neon);
-            color: var(--bg-dark);
-        }
-
-        /* --- Подвал (Footer) --- */
-        footer {
-            background: #05050a;
-            padding: 40px 5%;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 50px;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            color: var(--text-muted);
-        }
-        
-        .admin-link { color: #333; cursor: pointer; font-size: 12px; margin-top: 10px; }
-        .admin-link:hover { color: var(--primary-neon); }
-
-        /* --- Модальное окно (для входа/регистрации) --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            padding: 40px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid var(--primary-neon);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
-            position: relative;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .close-btn:hover {
-            color: var(--primary-neon);
-        }
-
-        .modal h2 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            background: #0a0a12;
-            border: 1px solid #333;
-            border-radius: 5px;
-            color: white;
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary-neon);
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px;
-            }
-            nav ul {
-                gap: 15px;
-                font-size: 0.9rem;
-            }
-            h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+    footer { text-align: center; padding: 40px; color: #555; border-top: 1px solid #1a1a2e; margin-top: 50px; }
+</style>
 </head>
 <body>
 
-    <!-- Шапка сайта -->
-    <header>
-        <div class="logo">FutureToys</div>
-        <nav>
-            <ul>
-                <li><a href="#about">О нас</a></li>
-                <li><a href="#toys">Игрушки</a></li>
-                <li><a href="#contacts">Контакты</a></li>
-            </ul>
-        </nav>
-        <div class="auth-buttons">
-            <button class="btn btn-login" onclick="openModal('login')">Вход</button>
-            <button class="btn btn-register" onclick="openModal('register')">Регистрация</button>
-        </div>
-    </header>
+<div class="bg-anim" id="bgAnim"></div>
 
-    <!-- Главный баннер -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Игрушки из <span class="neon-text">Будущего</span></h1>
-            <p>Уникальные 3D-модели, напечатанные на фотополимерных принтерах. Высокодетализированные фигурки, киберпанк-аксессуары и арт-объекты для вашей коллекции.</p>
-            <button class="cta-button" onclick="document.getElementById('toys').scrollIntoView({behavior: 'smooth'})">Смотреть каталог</button>
-        </div>
-    </section>
+<header>
+    <div class="logo" onclick="window.scrollTo(0,0)">FutureToys</div>
+    <nav>
+        <a href="#about">О нас</a>
+        <a href="#catalog">Игрушки</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="auth-buttons" id="authButtons"></div>
+</header>
 
-    <!-- Секция О нас (Кратко) -->
-    <section id="about" style="padding: 100px 5%; text-align: center; background: var(--bg-card);">
-        <h2 class="section-title">О нас</h2>
-        <p style="max-width: 800px; margin: 0 auto; color: var(--text-muted); line-height: 1.8; font-size: 1.1rem;">
-            Мы — команда энтузиастов, одержимых 3D-печатью и научной фантастикой. Наша миссия — материализовать идеи из будущего. Мы используем смолу высокого разрешения и профессиональное ПО для создания моделей, которые невозможно найти в обычных магазинах. Каждая игрушка — это произведение цифрового искусства.
-        </p>
-    </section>
+<div class="hero">
+    <h1>ИГРУШКИ ИЗ БУДУЩЕГО</h1>
+    <p>Уникальные 3D-модели, напечатанные на 3D-принтере.</p>
+    <button class="btn btn-register" onclick="document.getElementById('catalog').scrollIntoView()">Смотреть каталог</button>
+</div>
 
-    <!-- Секция Игрушки (Каталог) -->
-    <section id="toys" class="catalog">
-        <h2 class="section-title">Наши <span class="neon-text">Игрушки</span></h2>
-        <div class="grid-container">
-            
-            <!-- Товар 1 -->
-            <div class="card">
-                <img src="1.jpg" alt="Товар 1">
-                <div class="card-content">
-                    <h3 class="card-title">Однокликерный фиджет</h3>
-                    <div class="card-price">120 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
+<!-- Счетчики -->
+<div class="counters">
+    <div class="counter-box"><div class="counter-num" data-target="1500">0</div><div class="counter-label">Клиентов</div></div>
+    <div class="counter-box"><div class="counter-num" data-target="8500">0</div><div class="counter-label">Игрушек</div></div>
+    <div class="counter-box"><div class="counter-num" data-target="50">0</div><div class="counter-label">Моделей</div></div>
+</div>
 
-            <!-- Товар 2 -->
-            <div class="card">
-                <img src="2.jpg" alt="Товар 2">
-                <div class="card-content">
-                    <h3 class="card-title">Скребок</h3>
-                    <div class="card-price">50 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
+<!-- Преимущества -->
+<div class="features">
+    <div class="feature"><div class="feature-icon">🚀</div><h4>Быстрая доставка</h4><p>Отправляем в день заказа</p></div>
+    <div class="feature"><div class="feature-icon">💎</div><h4>Качество</h4><p>Прочный PLA-пластик</p></div>
+    <div class="feature"><div class="feature-icon">🎨</div><h4>Уникальность</h4><p>Авторские 3D-модели</p></div>
+    <div class="feature"><div class="feature-icon">🛡️</div><h4>Гарантия</h4><p>Возврат 14 дней</p></div>
+</div>
 
-            <!-- Товар 3 -->
-            <div class="card">
-                <img src="3.jpg" alt="Товар 3">
-                <div class="card-content">
-                    <h3 class="card-title">Сюрикен</h3>
-                    <div class="card-price">70 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
+<div id="about" style="text-align: center; padding: 60px 20px; background: #080810;">
+    <h2 style="color: #00f3ff; margin-bottom: 15px; font-family: 'Orbitron';">О нас</h2>
+    <p style="color: #a0a0b0; max-width: 600px; margin: 0 auto; line-height: 1.8;">Мы создаем уникальные 3D-игрушки из экологичного пластика. Каждая модель — это результат кропотливой работы дизайнеров и высокоточных принтеров.</p>
+</div>
 
-            <!-- Товар 4 -->
-            <div class="card">
-                <img src="4.jpg" alt="Товар 4">
-                <div class="card-content">
-                    <h3 class="card-title">Кастет</h3>
-                    <div class="card-price">510 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
-
-            <!-- Товар 5 -->
-            <div class="card">
-                <img src="5.jpg" alt="Товар 5">
-                <div class="card-content">
-                    <h3 class="card-title">Кубик антистресс</h3>
-                    <div class="card-price">290 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
-
-            <!-- Товар 6 -->
-            <div class="card">
-                <img src="6.jpg" alt="Товар 6">
-                <div class="card-content">
-                    <h3 class="card-title">Брелок Мишка</h3>
-                    <div class="card-price">290 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
-
-            <!-- Товар 7 -->
-            <div class="card">
-                <img src="7.jpg" alt="Товар 7">
-                <div class="card-content">
-                    <h3 class="card-title">Спиральный конус</h3>
-                    <div class="card-price">510 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
-
-            <!-- Товар 8 -->
-            <div class="card">
-                <img src="8.jpg" alt="Товар 8">
-                <div class="card-content">
-                    <h3 class="card-title">Трехкликерный фиджет</h3>
-                    <div class="card-price">190 ₽</div>
-                    <button class="card-btn">В корзину</button>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Секция Контакты -->
-    <section id="contacts" style="padding: 80px 5%; text-align: center;">
-        <h2 class="section-title">Контакты</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">Свяжитесь с нами для индивидуального заказа или сотрудничества</p>
-        <div style="font-size: 1.2rem;">
-            <p>📧 Email: <a href="mailto:igorromenskij48@gmail.com" style="color: var(--primary-neon);">igorromenskij48@gmail.com</a></p>
-            <p style="margin-top: 10px;">📱 Телефон: <span style="color: var(--primary-neon);">+7 (926) 297-81-24</span></p>
-        </div>
-    </section>
-
-    <!-- Подвал -->
-    <footer>
-        <div class="footer-content">
-            <div class="logo" style="font-size: 1.2rem;">FutureToys</div>
-            <p>&copy; 2024 Игрушки из Будущего. Все права защищены.</p>
-            <span class="admin-link" onclick="alert('Тут будет вход для админа')">[Админ-панель]</span>
-        </div>
-    </footer>
-
-    <!-- Модальное окно -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">Вход</h2>
-            <form id="authForm">
-                <div class="form-group">
-                    <input type="email" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Пароль" required>
-                </div>
-                <button type="submit" class="btn btn-register" style="width: 100%; margin-top: 10px;" id="modalBtn">Войти</button>
-            </form>
-        </div>
+<div class="catalog" id="catalog">
+    <h2 class="section-title">Наш <span style="color: #bc13fe;">Каталог</span></h2>
+    <div class="grid">
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="1.jpg"><h3>Однокликерный фиджет</h3><div class="price">120 ₽</div><button class="add-btn" onclick="addToCart('Однокликерный фиджет', 120)">Добавить</button></div>
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="2.jpg"><h3>Скребок</h3><div class="price">50 ₽</div><button class="add-btn" onclick="addToCart('Скребок', 50)">Добавить</button></div>
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="3.jpg"><h3>Сюрикен</h3><div class="price">70 ₽</div><button class="add-btn" onclick="addToCart('Сюрикен', 70)">Добавить</button></div>
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="4.jpg"><h3>Кастет</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Кастет', 510)">Добавить</button></div>
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="5.jpg"><h3>Кубик антистресс</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Кубик антистресс', 290)">Добавить</button></div>
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="6.jpg"><h3>Брелок Мишка</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Брелок Мишка', 290)">Добавить</button></div>
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="7.jpg"><h3>Спиральный фиджи конус</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Спиральный конус', 510)">Добавить</button></div>
+        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="8.jpg"><h3>Трехкликерный фиджет</h3><div class="price">190 ₽</div><button class="add-btn" onclick="addToCart('Трехкликерный фиджет', 190)">Добавить</button></div>
     </div>
+</div>
 
-    <!-- Скрипты -->
-    <script>
-        // Логика для модального окна
-        const modal = document.getElementById('authModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBtn = document.getElementById('modalBtn');
+<div class="reviews" id="reviews">
+    <h2 class="section-title">Отзывы <span style="color: #bc13fe;">клиентов</span></h2>
+    <div class="reviews-grid">
+        <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">"Заказывал фиджет, качество просто супер! Пластик гладкий, приятно держать в руках. Доставили за 2 дня."</div><div class="review-author"><div class="avatar">А</div><div><b>Алексей</b><br><small style="color: #555;">Москва</small></div></div></div>
+        <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">"Очень крутые 3D-игрушки. Взяла мишку на брелок, все друзья спрашивают, где купила. Спасибо!"</div><div class="review-author"><div class="avatar">М</div><div><b>Мария</b><br><small style="color: #555;">СПБ</small></div></div></div>
+        <div class="review-card"><div class="stars">★★★★☆</div><div class="review-text">"Сюрикен огонь. Единственное, хотелось бы побольше цветов на выбор. Но в целом очень доволен."</div><div class="review-author"><div class="avatar">Д</div><div><b>Дмитрий</b><br><small style="color: #555;">Казань</small></div></div></div>
+    </div>
+</div>
 
-        function openModal(type) {
-            modal.style.display = 'flex';
-            if (type === 'login') {
-                modalTitle.innerText = 'Вход';
-                modalBtn.innerText = 'Войти';
-            } else {
-                modalTitle.innerText = 'Регистрация';
-                modalBtn.innerText = 'Зарегистрироваться';
-            }
+<!-- Подписка -->
+<div class="subscribe">
+    <h2>Будь в курсе новинок</h2>
+    <p>Подпишись на рассылку и получи скидку 10% на первый заказ</p>
+    <div class="sub-form">
+        <input type="email" id="subEmail" placeholder="Ваш Email" required>
+        <button onclick="subscribe()">Подписаться</button>
+    </div>
+</div>
+
+<footer id="contacts">
+    &copy; 2024 Игрушки из Будущего.<br>
+    📧 <a href="mailto:igorromenskij48@gmail.com" style="color: #00f3ff; text-decoration: none;">igorromenskij48@gmail.com</a> | 
+    📱 <span style="color: #00f3ff;">+7 (926) 297-81-24</span>
+</footer>
+
+<!-- Корзина -->
+<div class="panel" id="cartPanel">
+    <div class="panel-header"><h2>Корзина</h2><button class="close-panel" onclick="toggleCart()">&times;</button></div>
+    <ul class="cart-list" id="cartList"></ul>
+    <div class="cart-total">Итого: <span id="total">0</span> ₽</div>
+    <div class="promo-box">
+        <input type="text" id="promoInput" placeholder="Промокод (FUTURE)">
+        <button onclick="applyPromo()">ОК</button>
+    </div>
+    <button class="checkout-btn" onclick="openPayment()">Оформить заказ</button>
+</div>
+
+<!-- Заказы -->
+<div class="panel" id="ordersPanel">
+    <div class="panel-header orders"><h2>Мои заказы</h2><button class="close-panel" onclick="toggleOrders()">&times;</button></div>
+    <ul class="orders-list" id="ordersList"></ul>
+</div>
+
+<!-- Окно оплаты -->
+<div class="modal" id="paymentModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="document.getElementById('paymentModal').style.display='none'">&times;</button>
+        <h2 style="color:#00f3ff; margin-top:0; font-family:'Orbitron';">Оплата</h2>
+        <p style="color: #a0a0b0; margin-bottom: 5px;">Код заказа:</p>
+        <div class="code-box" id="orderCode">FT-0000</div>
+        <p style="color: #a0a0b0; margin-bottom: 5px;">Сумма:</p>
+        <div class="sum-box" id="orderSum">0 ₽</div>
+        <div class="instructions">
+            <b>Инструкция:</b><br>
+            1. Переведите сумму на номер: <b>+7 (926) 297-81-24</b><br>
+            2. В комментарии укажите код: <b id="codeInstr">FT-0000</b><br>
+            3. Заполните данные ниже.
+        </div>
+        <input type="text" id="clientName" placeholder="Ваше Имя" required>
+        <input type="tel" id="clientPhone" placeholder="Ваш Телефон" required>
+        <button class="confirm-btn" onclick="confirmPayment()" id="payBtn">✅ Я оплатил</button>
+    </div>
+</div>
+
+<!-- Окно Входа / Регистрации -->
+<div class="modal" id="authModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="document.getElementById('authModal').style.display='none'">&times;</button>
+        <h2 id="authTitle" style="color:#00f3ff; margin-top:0; font-family:'Orbitron';">Вход</h2>
+        <div id="registerFields" style="display: none;">
+            <input type="text" id="regName" placeholder="Ваше Имя" required>
+        </div>
+        <input type="email" id="authEmail" placeholder="Ваш Email" required>
+        <input type="password" id="authPassword" placeholder="Пароль" required>
+        <button class="confirm-btn" id="authBtn" onclick="submitAuth()">Войти</button>
+    </div>
+</div>
+
+<!-- Контейнер для тостов (уведомлений) -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Кнопка наверх -->
+<button class="up-btn" id="upBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+<script>
+/* --- Фон --- */
+const bg = document.getElementById('bgAnim');
+for(let i=0; i<50; i++) {
+    let div = document.createElement('div');
+    div.style.left = Math.random() * 100 + '%';
+    div.style.animationDuration = Math.random() * 3 + 2 + 's';
+    div.style.animationDelay = Math.random() * 5 + 's';
+    div.style.opacity = Math.random() * 0.5 + 0.1;
+    bg.appendChild(div);
+}
+
+/* --- Уведомления (Тосты) --- */
+function showToast(message) {
+    let container = document.getElementById('toastContainer');
+    let toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 3000);
+}
+
+/* --- Счетчики --- */
+const counters = document.querySelectorAll('.counter-num');
+counters.forEach(counter => {
+    const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        const current = +counter.innerText;
+        const inc = target / 100;
+        if (current < target) {
+            counter.innerText = Math.ceil(current + inc);
+            setTimeout(updateCount, 20);
+        } else {
+            counter.innerText = target;
         }
+    };
+    let observer = new IntersectionObserver((entries) => {
+        if(entries[0].isIntersecting) { updateCount(); observer.disconnect(); }
+    });
+    observer.observe(counter);
+});
 
-        function closeModal() {
-            modal.style.display = 'none';
-        }
+/* --- Кнопка наверх --- */
+window.onscroll = function() {
+    let btn = document.getElementById('upBtn');
+    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        btn.classList.add('show');
+    } else {
+        btn.classList.remove('show');
+    }
+};
 
-        // Закрытие по клику вне окна
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
+/* --- Подписка --- */
+function subscribe() {
+    let email = document.getElementById('subEmail').value;
+    if (email.includes('@')) {
+        showToast('Вы успешно подписались! Скидка 10% на первый заказ.');
+        document.getElementById('subEmail').value = '';
+    } else {
+        alert('Введите корректный Email');
+    }
+}
 
-        // Обработка формы (заглушка)
-        document.getElementById('authForm').onsubmit = function(e) {
-            e.preventDefault();
-            alert('Это демо-версия сайта. Функционал входа будет добавлен позже.');
-            closeModal();
-        };
-    </script>
+/* --- Избранное --- */
+function toggleFav(btn) {
+    btn.classList.toggle('active');
+    if (btn.classList.contains('active')) {
+        btn.innerText = '❤️';
+        showToast('Добавлено в избранное');
+    } else {
+        btn.innerText = '🤍';
+    }
+}
+
+/* --- АККАУНТЫ --- */
+window.onload = function() {
+    let savedUser = localStorage.getItem('futuretoys_user');
+    if (savedUser) { showLoggedIn(savedUser); } else { showLoggedOut(); }
+    loadOrders();
+};
+
+function showLoggedOut() {
+    document.getElementById('authButtons').innerHTML = `
+        <button class="btn btn-login" onclick="openAuth('login')">Вход</button>
+        <button class="btn btn-register" onclick="openAuth('register')">Регистрация</button>
+        <button class="btn btn-orders" onclick="toggleOrders()">Заказы</button>
+        <button class="btn btn-cart" id="cartBtn" onclick="toggleCart()">Корзина (<span id="cartCount">0</span>)</button>
+    `;
+    updateCartCount();
+}
+
+function showLoggedIn(name) {
+    document.getElementById('authButtons').innerHTML = `
+        <span class="user-greeting">Привет, ${name}!</span>
+        <button class="btn btn-logout" onclick="logout()" style="background:transparent; color:#ff4d4d; border:1px solid #ff4d4d; padding: 10px 15px; border-radius: 30px; cursor: pointer;">Выйти</button>
+        <button class="btn btn-orders" onclick="toggleOrders()">Заказы</button>
+        <button class="btn btn-cart" id="cartBtn" onclick="toggleCart()">Корзина (<span id="cartCount">0</span>)</button>
+    `;
+    updateCartCount();
+}
+
+function logout() {
+    localStorage.removeItem('futuretoys_user');
+    showLoggedOut();
+}
+
+function openAuth(type) {
+    document.getElementById('authModal').style.display = 'flex';
+    if (type === 'login') {
+        document.getElementById('authTitle').innerText = 'Вход';
+        document.getElementById('registerFields').style.display = 'none';
+        document.getElementById('authBtn').innerText = 'Войти';
+    } else {
+        document.getElementById('authTitle').innerText = 'Регистрация';
+        document.getElementById('registerFields').style.display = 'block';
+        document.getElementById('authBtn').innerText = 'Зарегистрироваться';
+    }
+}
+
+function submitAuth() {
+    let email = document.getElementById('authEmail').value.trim();
+    let pass = document.getElementById('authPassword').value.trim();
+    if (email === '' || pass === '') { alert('Заполните Email и Пароль!'); return; }
+    let nameField = document.getElementById('regName');
+    let name = nameField ? nameField.value.trim() : 'Пользователь';
+    if (name === '') { alert('Введите ваше имя!'); return; }
+    localStorage.setItem('futuretoys_user', name);
+    document.getElementById('authModal').style.display = 'none';
+    showLoggedIn(name);
+    showToast(`Добро пожаловать, ${name}!`);
+}
+
+/* --- КОРЗИНА --- */
+let cart = [];
+let currentOrderCode = '';
+let discount = 0; // Скидка
+
+function generateOrderCode() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; const numbers = '0123456789';
+    let code = 'FT-';
+    for (let i = 0; i < 2; i++) code += letters.charAt(Math.floor(Math.random() * letters.length));
+    for (let i = 0; i < 4; i++) code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    return code;
+}
+
+function addToCart(name, price) {
+    let item = cart.find(i => i.name === name);
+    if (item) { item.qty++; } else { cart.push({name, price, qty: 1}); }
+    updateCart();
+    showToast(`${name} добавлен в корзину`);
+    
+    let cartBtn = document.getElementById('cartBtn');
+    if(cartBtn) {
+        cartBtn.classList.add('pulse');
+        setTimeout(() => cartBtn.classList.remove('pulse'), 400);
+    }
+    document.getElementById('cartPanel').classList.add('open');
+}
+
+function applyPromo() {
+    let code = document.getElementById('promoInput').value.trim().toUpperCase();
+    if (code === 'FUTURE') {
+        discount = 10;
+        updateCart();
+        showToast('Промокод применен! Скидка 10%');
+    } else {
+        showToast('Неверный промокод');
+    }
+}
+
+function updateCart() {
+    let list = document.getElementById('cartList'); let totalSum = 0;
+    list.innerHTML = '';
+    cart.forEach((item) => {
+        totalSum += item.price * item.qty;
+        list.innerHTML += `<li class="cart-item"><span>${item.name} (x${item.qty})</span><span>${item.price * item.qty} ₽</span></li>`;
+    });
+    
+    // Скидка
+    if (discount > 0) {
+        let discountAmount = totalSum * (discount / 100);
+        totalSum = totalSum - discountAmount;
+    }
+    
+    document.getElementById('total').innerText = totalSum;
+    updateCartCount();
+}
+
+function updateCartCount() {
+    let countEl = document.getElementById('cartCount');
+    if (countEl) {
+        let count = cart.reduce((s, i) => s + i.qty, 0);
+        countEl.innerText = count;
+    }
+}
+
+function toggleCart() { document.getElementById('cartPanel').classList.toggle('open'); }
+function toggleOrders() { document.getElementById('ordersPanel').classList.toggle('open'); }
+
+function openPayment() {
+    if (cart.length === 0) { alert('Корзина пуста!'); return; }
+    currentOrderCode = generateOrderCode();
+    document.getElementById('orderCode').innerText = currentOrderCode;
+    document.getElementById('codeInstr').innerText = currentOrderCode;
+    
+    let totalSum = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    if (discount > 0) totalSum = totalSum - (totalSum * (discount / 100));
+    
+    document.getElementById('orderSum').innerText = totalSum + ' ₽';
+    document.getElementById('paymentModal').style.display = 'flex';
+    document.getElementById('cartPanel').classList.remove('open');
+}
+
+function confirmPayment() {
+    let name = document.getElementById('clientName').value.trim();
+    let phone = document.getElementById('clientPhone').value.trim();
+    if (name === '' || phone === '') { alert('Заполните Имя и Телефон!'); return; }
+
+    let btn = document.getElementById('payBtn');
+    btn.innerText = '⏳ Обработка...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+        btn.innerText = '✅ Я оплатил';
+        btn.disabled = false;
+        document.getElementById('paymentModal').style.display = 'none';
+        
+        saveOrder(currentOrderCode, name, phone);
+        
+        // Финальное уведомление с кодом заказа
+        showToast(`Заказ ${currentOrderCode} принят в обработку!`);
+        setTimeout(() => { alert(`✅ Ваш заказ ${currentOrderCode} ПРИНЯТ В ОБРАБОТКУ!\n\nМы проверим оплату и свяжемся с вами.`); }, 300);
+        
+        cart = []; discount = 0; updateCart();
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientPhone').value = '';
+    }, 1500);
+}
+
+/* --- ЗАКАЗЫ --- */
+function saveOrder(code, name, phone) {
+    let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
+    let totalSum = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    if (discount > 0) totalSum = totalSum - (totalSum * (discount / 100));
+    let itemsList = cart.map(i => `${i.name} (x${i.qty})`).join(', ');
+    
+    orders.unshift({
+        code: code, name: name, phone: phone, sum: totalSum, items: itemsList,
+        date: new Date().toLocaleString('ru-RU')
+    });
+    
+    localStorage.setItem('futuretoys_orders', JSON.stringify(orders));
+    loadOrders();
+}
+
+function loadOrders() {
+    let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
+    let list = document.getElementById('ordersList');
+    if (orders.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:#a0a0b0; margin-top:20px;">У вас пока нет заказов.</p>';
+        return;
+    }
+    list.innerHTML = orders.map(o => `
+        <div class="order-item">
+            <h4>Заказ ${o.code}</h4>
+            <p><b>Дата:</b> ${o.date}</p>
+            <p><b>Сумма:</b> ${o.sum} ₽</p>
+            <p><b>Товары:</b> ${o.items}</p>
+        </div>
+    `).join('');
+}
+</script>
 </body>
 </html>
