@@ -159,6 +159,24 @@
     .up-btn.show { display: flex; }
 
     footer { text-align: center; padding: 40px; color: #555; border-top: 1px solid #1a1a2e; margin-top: 50px; }
+    .admin-link { color: #333; cursor: pointer; font-size: 12px; margin-top: 10px; display: inline-block; }
+    .admin-link:hover { color: #00f3ff; }
+
+    /* АДМИН-ПАНЕЛЬ */
+    #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05050a; z-index: 1000; padding: 30px; overflow-y: auto; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; padding-bottom: 20px; margin-bottom: 30px; }
+    .admin-header h1 { color: #00f3ff; font-family: 'Orbitron'; }
+    .admin-close { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .admin-section h2 { color: #fff; font-size: 20px; margin-bottom: 20px; border-left: 3px solid #00f3ff; padding-left: 10px; }
+    .admin-form input { margin-bottom: 12px; }
+    .admin-form button { background: #00f3ff; color: #0a0a12; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; }
+    .admin-list { list-style: none; }
+    .admin-item { background: #0f0f1a; border: 1px solid #333; padding: 15px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+    .admin-item button { background: #ff4d4d; color: #fff; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+    .order-item-admin { background: #0f0f1a; border: 1px solid #333; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 3px solid #00f3ff; }
+    .order-item-admin h4 { color: #00f3ff; margin-bottom: 5px; font-family: 'Orbitron'; }
+    .order-item-admin p { color: #a0a0b0; font-size: 13px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -204,16 +222,7 @@
 
 <div class="catalog" id="catalog">
     <h2 class="section-title">Наш <span style="color: #bc13fe;">Каталог</span></h2>
-    <div class="grid">
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="1.jpg"><h3>Однокликерный фиджет</h3><div class="price">120 ₽</div><button class="add-btn" onclick="addToCart('Однокликерный фиджет', 120)">Добавить</button></div>
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="2.jpg"><h3>Скребок</h3><div class="price">50 ₽</div><button class="add-btn" onclick="addToCart('Скребок', 50)">Добавить</button></div>
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="3.jpg"><h3>Сюрикен</h3><div class="price">70 ₽</div><button class="add-btn" onclick="addToCart('Сюрикен', 70)">Добавить</button></div>
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="4.jpg"><h3>Кастет</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Кастет', 510)">Добавить</button></div>
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="5.jpg"><h3>Кубик антистресс</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Кубик антистресс', 290)">Добавить</button></div>
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="6.jpg"><h3>Брелок Мишка</h3><div class="price">290 ₽</div><button class="add-btn" onclick="addToCart('Брелок Мишка', 290)">Добавить</button></div>
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="7.jpg"><h3>Спиральный фиджи конус</h3><div class="price">510 ₽</div><button class="add-btn" onclick="addToCart('Спиральный конус', 510)">Добавить</button></div>
-        <div class="card"><button class="fav-btn" onclick="toggleFav(this)">🤍</button><img src="8.jpg"><h3>Трехкликерный фиджет</h3><div class="price">190 ₽</div><button class="add-btn" onclick="addToCart('Трехкликерный фиджет', 190)">Добавить</button></div>
-    </div>
+    <div class="grid" id="productGrid"></div>
 </div>
 
 <div class="reviews" id="reviews">
@@ -239,6 +248,7 @@
     &copy; 2024 Игрушки из Будущего.<br>
     📧 <a href="mailto:igorromenskij48@gmail.com" style="color: #00f3ff; text-decoration: none;">igorromenskij48@gmail.com</a> | 
     📱 <span style="color: #00f3ff;">+7 (926) 297-81-24</span>
+    <br><span class="admin-link" onclick="openAdminLogin()">[Админ-панель]</span>
 </footer>
 
 <!-- Корзина -->
@@ -294,93 +304,139 @@
     </div>
 </div>
 
-<!-- Контейнер для тостов (уведомлений) -->
+<!-- Админ-панель -->
+<div id="adminPanel">
+    <div class="admin-header">
+        <h1>Админ-Панель</h1>
+        <button class="admin-close" onclick="document.getElementById('adminPanel').style.display='none'">Закрыть</button>
+    </div>
+    <div class="admin-grid">
+        <div class="admin-section">
+            <h2>Добавить товар</h2>
+            <div class="admin-form">
+                <input type="text" id="newName" placeholder="Название товара">
+                <input type="number" id="newPrice" placeholder="Цена (руб)">
+                <input type="text" id="newImage" placeholder="Ссылка на фото (например: 1.jpg)">
+                <button onclick="addProduct()">Добавить</button>
+            </div>
+            <h2 style="margin-top:30px;">Список товаров</h2>
+            <ul class="admin-list" id="adminProductList"></ul>
+        </div>
+        <div class="admin-section">
+            <h2>Заказы</h2>
+            <ul class="admin-list" id="adminOrdersList"></ul>
+        </div>
+    </div>
+</div>
+
+<!-- Тосты (уведомления) -->
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- Кнопка наверх -->
 <button class="up-btn" id="upBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
 
 <script>
-/* --- Фон --- */
-const bg = document.getElementById('bgAnim');
-for(let i=0; i<50; i++) {
-    let div = document.createElement('div');
-    div.style.left = Math.random() * 100 + '%';
-    div.style.animationDuration = Math.random() * 3 + 2 + 's';
-    div.style.animationDelay = Math.random() * 5 + 's';
-    div.style.opacity = Math.random() * 0.5 + 0.1;
-    bg.appendChild(div);
-}
+/* --- ДАННЫЕ ТОВАРОВ --- */
+const defaultProducts = [
+    { name: 'Однокликерный фиджет', price: 120, img: '1.jpg' },
+    { name: 'Скребок', price: 50, img: '2.jpg' },
+    { name: 'Сюрикен', price: 70, img: '3.jpg' },
+    { name: 'Кастет', price: 510, img: '4.jpg' },
+    { name: 'Кубик антистресс', price: 290, img: '5.jpg' },
+    { name: 'Брелок Мишка', price: 290, img: '6.jpg' },
+    { name: 'Спиральный конус', price: 510, img: '7.jpg' },
+    { name: 'Трехкликерный фиджет', price: 190, img: '8.jpg' }
+];
 
-/* --- Уведомления (Тосты) --- */
-function showToast(message) {
-    let container = document.getElementById('toastContainer');
-    let toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerText = message;
-    container.appendChild(toast);
-    setTimeout(() => { toast.remove(); }, 3000);
-}
-
-/* --- Счетчики --- */
-const counters = document.querySelectorAll('.counter-num');
-counters.forEach(counter => {
-    const updateCount = () => {
-        const target = +counter.getAttribute('data-target');
-        const current = +counter.innerText;
-        const inc = target / 100;
-        if (current < target) {
-            counter.innerText = Math.ceil(current + inc);
-            setTimeout(updateCount, 20);
-        } else {
-            counter.innerText = target;
-        }
-    };
-    let observer = new IntersectionObserver((entries) => {
-        if(entries[0].isIntersecting) { updateCount(); observer.disconnect(); }
-    });
-    observer.observe(counter);
-});
-
-/* --- Кнопка наверх --- */
-window.onscroll = function() {
-    let btn = document.getElementById('upBtn');
-    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-        btn.classList.add('show');
-    } else {
-        btn.classList.remove('show');
-    }
-};
-
-/* --- Подписка --- */
-function subscribe() {
-    let email = document.getElementById('subEmail').value;
-    if (email.includes('@')) {
-        showToast('Вы успешно подписались! Скидка 10% на первый заказ.');
-        document.getElementById('subEmail').value = '';
-    } else {
-        alert('Введите корректный Email');
-    }
-}
-
-/* --- Избранное --- */
-function toggleFav(btn) {
-    btn.classList.toggle('active');
-    if (btn.classList.contains('active')) {
-        btn.innerText = '❤️';
-        showToast('Добавлено в избранное');
-    } else {
-        btn.innerText = '🤍';
-    }
-}
-
-/* --- АККАУНТЫ --- */
+/* --- ИНИЦИАЛИЗАЦИЯ --- */
 window.onload = function() {
     let savedUser = localStorage.getItem('futuretoys_user');
     if (savedUser) { showLoggedIn(savedUser); } else { showLoggedOut(); }
+    loadProducts();
     loadOrders();
 };
 
+/* --- ТОВАРЫ --- */
+function loadProducts() {
+    let products = JSON.parse(localStorage.getItem('future_products'));
+    if (!products || products.length === 0) {
+        products = defaultProducts;
+        localStorage.setItem('future_products', JSON.stringify(products));
+    }
+    renderProducts(products);
+}
+
+function renderProducts(products) {
+    let grid = document.getElementById('productGrid');
+    grid.innerHTML = '';
+    products.forEach(p => {
+        grid.innerHTML += `
+            <div class="card">
+                <img src="${p.img}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <div class="price">${p.price} ₽</div>
+                <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">Добавить</button>
+            </div>
+        `;
+    });
+}
+
+/* --- АДМИН-ПАНЕЛЬ --- */
+function openAdminLogin() {
+    let pass = prompt('Введите пароль администратора:');
+    if (pass === 'admin926') { // ПАРОЛЬ ИЗМЕНЕН НА admin926
+        document.getElementById('adminPanel').style.display = 'block';
+        loadAdminProducts();
+        loadAdminOrders();
+    } else {
+        alert('Неверный пароль!');
+    }
+}
+
+function loadAdminProducts() {
+    let products = JSON.parse(localStorage.getItem('future_products')) || [];
+    let list = document.getElementById('adminProductList');
+    list.innerHTML = '';
+    products.forEach((p, index) => {
+        list.innerHTML += `
+            <li class="admin-item">
+                <span>${p.name} — ${p.price} ₽</span>
+                <button onclick="deleteProduct(${index})">Удалить</button>
+            </li>
+        `;
+    });
+}
+
+function addProduct() {
+    let name = document.getElementById('newName').value.trim();
+    let price = document.getElementById('newPrice').value.trim();
+    let img = document.getElementById('newImage').value.trim();
+    
+    if (name === '' || price === '' || img === '') { alert('Заполните все поля!'); return; }
+    
+    let products = JSON.parse(localStorage.getItem('future_products')) || [];
+    products.push({ name: name, price: parseInt(price), img: img });
+    localStorage.setItem('future_products', JSON.stringify(products));
+    
+    document.getElementById('newName').value = '';
+    document.getElementById('newPrice').value = '';
+    document.getElementById('newImage').value = '';
+    
+    loadProducts();
+    loadAdminProducts();
+    showToast('Товар добавлен!');
+}
+
+function deleteProduct(index) {
+    if (!confirm('Удалить этот товар?')) return;
+    let products = JSON.parse(localStorage.getItem('future_products')) || [];
+    products.splice(index, 1);
+    localStorage.setItem('future_products', JSON.stringify(products));
+    loadProducts();
+    loadAdminProducts();
+}
+
+/* --- АККАУНТЫ --- */
 function showLoggedOut() {
     document.getElementById('authButtons').innerHTML = `
         <button class="btn btn-login" onclick="openAuth('login')">Вход</button>
@@ -435,7 +491,7 @@ function submitAuth() {
 /* --- КОРЗИНА --- */
 let cart = [];
 let currentOrderCode = '';
-let discount = 0; // Скидка
+let discount = 0;
 
 function generateOrderCode() {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; const numbers = '0123456789';
@@ -478,7 +534,6 @@ function updateCart() {
         list.innerHTML += `<li class="cart-item"><span>${item.name} (x${item.qty})</span><span>${item.price * item.qty} ₽</span></li>`;
     });
     
-    // Скидка
     if (discount > 0) {
         let discountAmount = totalSum * (discount / 100);
         totalSum = totalSum - discountAmount;
@@ -529,7 +584,6 @@ function confirmPayment() {
         
         saveOrder(currentOrderCode, name, phone);
         
-        // Финальное уведомление с кодом заказа
         showToast(`Заказ ${currentOrderCode} принят в обработку!`);
         setTimeout(() => { alert(`✅ Ваш заказ ${currentOrderCode} ПРИНЯТ В ОБРАБОТКУ!\n\nМы проверим оплату и свяжемся с вами.`); }, 300);
         
@@ -553,6 +607,7 @@ function saveOrder(code, name, phone) {
     
     localStorage.setItem('futuretoys_orders', JSON.stringify(orders));
     loadOrders();
+    loadAdminOrders();
 }
 
 function loadOrders() {
@@ -570,6 +625,86 @@ function loadOrders() {
             <p><b>Товары:</b> ${o.items}</p>
         </div>
     `).join('');
+}
+
+function loadAdminOrders() {
+    let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
+    let list = document.getElementById('adminOrdersList');
+    if (!list) return;
+    if (orders.length === 0) {
+        list.innerHTML = '<p style="color:#666;">Заказов пока нет.</p>';
+        return;
+    }
+    list.innerHTML = orders.map(o => `
+        <li class="order-item-admin">
+            <h4>Заказ ${o.code}</h4>
+            <p><b>Клиент:</b> ${o.name} (${o.phone})</p>
+            <p><b>Товары:</b> ${o.items}</p>
+            <p><b>Сумма:</b> ${o.sum} ₽ | ${o.date}</p>
+        </li>
+    `).join('');
+}
+
+/* --- УВЕДОМЛЕНИЯ --- */
+function showToast(message) {
+    let container = document.getElementById('toastContainer');
+    let toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 3000);
+}
+
+/* --- СЧЕТЧИКИ --- */
+const counters = document.querySelectorAll('.counter-num');
+counters.forEach(counter => {
+    const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        const current = +counter.innerText;
+        const inc = target / 100;
+        if (current < target) {
+            counter.innerText = Math.ceil(current + inc);
+            setTimeout(updateCount, 20);
+        } else {
+            counter.innerText = target;
+        }
+    };
+    let observer = new IntersectionObserver((entries) => {
+        if(entries[0].isIntersecting) { updateCount(); observer.disconnect(); }
+    });
+    observer.observe(counter);
+});
+
+/* --- КНОПКА НАВЕРХ --- */
+window.onscroll = function() {
+    let btn = document.getElementById('upBtn');
+    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        btn.classList.add('show');
+    } else {
+        btn.classList.remove('show');
+    }
+};
+
+/* --- ПОДПИСКА --- */
+function subscribe() {
+    let email = document.getElementById('subEmail').value;
+    if (email.includes('@')) {
+        showToast('Вы успешно подписались! Скидка 10% на первый заказ.');
+        document.getElementById('subEmail').value = '';
+    } else {
+        alert('Введите корректный Email');
+    }
+}
+
+/* --- ИЗБРАННОЕ --- */
+function toggleFav(btn) {
+    btn.classList.toggle('active');
+    if (btn.classList.contains('active')) {
+        btn.innerText = '❤️';
+        showToast('Добавлено в избранное');
+    } else {
+        btn.innerText = '🤍';
+    }
 }
 </script>
 </body>
