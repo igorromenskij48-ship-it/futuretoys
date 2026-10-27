@@ -34,6 +34,9 @@
     .btn-orders { background: transparent; color: #ffd700; border: 1px solid #ffd700; }
     .btn-orders:hover { background: rgba(255,215,0,0.1); box-shadow: 0 0 15px rgba(255,215,0,0.5); }
 
+    .btn-admin { background: transparent; color: #888; border: 1px solid #444; padding: 8px 15px; font-size: 12px; border-radius: 5px; margin-right: 5px; transition: 0.3s; }
+    .btn-admin:hover { color: #00f3ff; border-color: #00f3ff; box-shadow: 0 0 10px rgba(0,243,255,0.3); }
+
     .user-greeting { color: #00f3ff; font-weight: bold; margin-right: 10px; text-shadow: 0 0 10px #00f3ff; }
 
     /* Главный экран */
@@ -113,7 +116,14 @@
     .close-panel:hover { color: #00f3ff; transform: rotate(90deg); }
     
     .cart-list, .orders-list { flex-grow: 1; overflow-y: auto; padding: 0; list-style: none; }
-    .cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; font-size: 16px; }
+    
+    /* Обновленный вид товара в корзине с кнопками + и - */
+    .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; font-size: 16px; }
+    .cart-item-controls { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { background: #333; border: none; color: #fff; width: 25px; height: 25px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+    .qty-btn:hover { background: #00f3ff; color: #000; }
+    .qty-display { min-width: 20px; text-align: center; font-weight: bold; }
+
     .order-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 3px solid #ffd700; }
     .order-item h4 { color: #ffd700; margin-bottom: 5px; font-family: 'Orbitron'; }
     .order-item p { color: #a0a0b0; font-size: 14px; margin-bottom: 5px; }
@@ -159,8 +169,6 @@
     .up-btn.show { display: flex; }
 
     footer { text-align: center; padding: 40px; color: #555; border-top: 1px solid #1a1a2e; margin-top: 50px; }
-    .admin-link { color: #333; cursor: pointer; font-size: 12px; margin-top: 10px; display: inline-block; }
-    .admin-link:hover { color: #00f3ff; }
 
     /* АДМИН-ПАНЕЛЬ */
     #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05050a; z-index: 1000; padding: 30px; overflow-y: auto; }
@@ -191,7 +199,9 @@
         <a href="#reviews">Отзывы</a>
         <a href="#contacts">Контакты</a>
     </nav>
-    <div class="auth-buttons" id="authButtons"></div>
+    <div class="auth-buttons" id="authButtons">
+        <button class="btn btn-admin" onclick="openAdminLogin()">⚙️ Админ</button>
+    </div>
 </header>
 
 <div class="hero">
@@ -248,7 +258,6 @@
     &copy; 2024 Игрушки из Будущего.<br>
     📧 <a href="mailto:igorromenskij48@gmail.com" style="color: #00f3ff; text-decoration: none;">igorromenskij48@gmail.com</a> | 
     📱 <span style="color: #00f3ff;">+7 (926) 297-81-24</span>
-    <br><span class="admin-link" onclick="openAdminLogin()">[Админ-панель]</span>
 </footer>
 
 <!-- Корзина -->
@@ -384,7 +393,7 @@ function renderProducts(products) {
 /* --- АДМИН-ПАНЕЛЬ --- */
 function openAdminLogin() {
     let pass = prompt('Введите пароль администратора:');
-    if (pass === 'admin926') { // ПАРОЛЬ ИЗМЕНЕН НА admin926
+    if (pass === 'admin926') { // ПАРОЛЬ admin926
         document.getElementById('adminPanel').style.display = 'block';
         loadAdminProducts();
         loadAdminOrders();
@@ -439,6 +448,7 @@ function deleteProduct(index) {
 /* --- АККАУНТЫ --- */
 function showLoggedOut() {
     document.getElementById('authButtons').innerHTML = `
+        <button class="btn btn-admin" onclick="openAdminLogin()">⚙️ Админ</button>
         <button class="btn btn-login" onclick="openAuth('login')">Вход</button>
         <button class="btn btn-register" onclick="openAuth('register')">Регистрация</button>
         <button class="btn btn-orders" onclick="toggleOrders()">Заказы</button>
@@ -449,6 +459,7 @@ function showLoggedOut() {
 
 function showLoggedIn(name) {
     document.getElementById('authButtons').innerHTML = `
+        <button class="btn btn-admin" onclick="openAdminLogin()">⚙️ Админ</button>
         <span class="user-greeting">Привет, ${name}!</span>
         <button class="btn btn-logout" onclick="logout()" style="background:transparent; color:#ff4d4d; border:1px solid #ff4d4d; padding: 10px 15px; border-radius: 30px; cursor: pointer;">Выйти</button>
         <button class="btn btn-orders" onclick="toggleOrders()">Заказы</button>
@@ -526,12 +537,34 @@ function applyPromo() {
     }
 }
 
+/* ИЗМЕНЕНИЕ КОЛИЧЕСТВА (+ и -) */
+function changeQty(name, delta) {
+    let item = cart.find(i => i.name === name);
+    if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) {
+            cart = cart.filter(i => i.name !== name); // Удаляем товар, если кол-во 0
+        }
+    }
+    updateCart();
+}
+
 function updateCart() {
     let list = document.getElementById('cartList'); let totalSum = 0;
     list.innerHTML = '';
     cart.forEach((item) => {
         totalSum += item.price * item.qty;
-        list.innerHTML += `<li class="cart-item"><span>${item.name} (x${item.qty})</span><span>${item.price * item.qty} ₽</span></li>`;
+        list.innerHTML += `
+            <li class="cart-item">
+                <span>${item.name}</span>
+                <div class="cart-item-controls">
+                    <button class="qty-btn" onclick="changeQty('${item.name}', -1)">−</button>
+                    <span class="qty-display">${item.qty}</span>
+                    <button class="qty-btn" onclick="changeQty('${item.name}', 1)">+</button>
+                </div>
+                <span>${item.price * item.qty} ₽</span>
+            </li>
+        `;
     });
     
     if (discount > 0) {
@@ -693,17 +726,6 @@ function subscribe() {
         document.getElementById('subEmail').value = '';
     } else {
         alert('Введите корректный Email');
-    }
-}
-
-/* --- ИЗБРАННОЕ --- */
-function toggleFav(btn) {
-    btn.classList.toggle('active');
-    if (btn.classList.contains('active')) {
-        btn.innerText = '❤️';
-        showToast('Добавлено в избранное');
-    } else {
-        btn.innerText = '🤍';
     }
 }
 </script>
