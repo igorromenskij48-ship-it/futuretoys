@@ -117,7 +117,6 @@
     
     .cart-list, .orders-list { flex-grow: 1; overflow-y: auto; padding: 0; list-style: none; }
     
-    /* Обновленный вид товара в корзине с кнопками + и - */
     .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; font-size: 16px; }
     .cart-item-controls { display: flex; align-items: center; gap: 10px; }
     .qty-btn { background: #333; border: none; color: #fff; width: 25px; height: 25px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
@@ -266,7 +265,7 @@
     <ul class="cart-list" id="cartList"></ul>
     <div class="cart-total">Итого: <span id="total">0</span> ₽</div>
     <div class="promo-box">
-        <input type="text" id="promoInput" placeholder="Промокод (FUTURE)">
+        <input type="text" id="promoInput" placeholder="Промокод (FUTURE, CYBER, NEON, TOY, FREESHIP)">
         <button onclick="applyPromo()">ОК</button>
     </div>
     <button class="checkout-btn" onclick="openPayment()">Оформить заказ</button>
@@ -393,7 +392,7 @@ function renderProducts(products) {
 /* --- АДМИН-ПАНЕЛЬ --- */
 function openAdminLogin() {
     let pass = prompt('Введите пароль администратора:');
-    if (pass === 'admin926') { // ПАРОЛЬ admin926
+    if (pass === 'admin926') {
         document.getElementById('adminPanel').style.display = 'block';
         loadAdminProducts();
         loadAdminOrders();
@@ -526,12 +525,29 @@ function addToCart(name, price) {
     document.getElementById('cartPanel').classList.add('open');
 }
 
+/* --- ПРОМОКОДЫ --- */
 function applyPromo() {
     let code = document.getElementById('promoInput').value.trim().toUpperCase();
     if (code === 'FUTURE') {
         discount = 10;
         updateCart();
-        showToast('Промокод применен! Скидка 10%');
+        showToast('Промокод FUTURE применен! Скидка 10%');
+    } else if (code === 'CYBER') {
+        discount = 15;
+        updateCart();
+        showToast('Промокод CYBER применен! Скидка 15%');
+    } else if (code === 'NEON') {
+        discount = 20;
+        updateCart();
+        showToast('Промокод NEON применен! Скидка 20%');
+    } else if (code === 'TOY') {
+        discount = 5;
+        updateCart();
+        showToast('Промокод TOY применен! Скидка 5%');
+    } else if (code === 'FREESHIP') {
+        discount = 10;
+        updateCart();
+        showToast('Промокод FREESHIP применен! Скидка 10%');
     } else {
         showToast('Неверный промокод');
     }
@@ -543,7 +559,7 @@ function changeQty(name, delta) {
     if (item) {
         item.qty += delta;
         if (item.qty <= 0) {
-            cart = cart.filter(i => i.name !== name); // Удаляем товар, если кол-во 0
+            cart = cart.filter(i => i.name !== name);
         }
     }
     updateCart();
