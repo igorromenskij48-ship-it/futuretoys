@@ -1,0 +1,16 @@
+{
+  "name": "FutureToys",
+  "short_name": "FutureToys",
+  "description": "Магазин 3D-игрушек из будущего",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05050a",
+  "theme_color": "#00f3ff",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/Q3FnXNXk/Chat-GPT-Image-28-2026-21-24-19.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
