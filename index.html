@@ -86,24 +86,23 @@
 </footer>
 
 <script>
-    // Используем picsum.photos - они не блокируются на GitHub!
-    // Каждая картинка уникальна благодаря параметру ?random=
+    // ВСТАВЛЯЕМ ВАШИ ФОТО КАК КОД
     const products = [
-        { name: 'Однокликерный фиджет', price: 120, img: 'https://picsum.photos/400/300?random=1' },
-        { name: 'Скребок', price: 50, img: 'https://picsum.photos/400/300?random=2' },
-        { name: 'Сюрикен', price: 70, img: 'https://picsum.photos/400/300?random=3' },
-        { name: 'Кастет', price: 510, img: 'https://picsum.photos/400/300?random=4' },
-        { name: 'Кубик антистресс', price: 290, img: 'https://picsum.photos/400/300?random=5' },
-        { name: 'Брелок Мишка', price: 290, img: 'https://picsum.photos/400/300?random=6' },
-        { name: 'Спиральный конус', price: 510, img: 'https://picsum.photos/400/300?random=7' },
-        { name: 'Трехкликерный фиджет', price: 190, img: 'https://picsum.photos/400/300?random=8' }
+        { name: 'Однокликерный фиджет', price: 120, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' },
+        { name: 'Скребок', price: 50, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' },
+        { name: 'Сюрикен', price: 70, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' },
+        { name: 'Кастет', price: 510, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' },
+        { name: 'Кубик антистресс', price: 290, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' },
+        { name: 'Брелок Мишка', price: 290, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' },
+        { name: 'Спиральный конус', price: 510, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' },
+        { name: 'Трехкликерный фиджет', price: 190, img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=' }
     ];
 
     const grid = document.getElementById('productGrid');
     products.forEach(p => {
         grid.innerHTML += `
             <div class="card">
-                <img src="${p.img}" alt="${p.name}" onerror="this.src='https://picsum.photos/400/300?random=99'">
+                <img src="${p.img}" alt="${p.name}">
                 <h3>${p.name}</h3>
                 <div class="price">${p.price} ₽</div>
                 <button class="add-btn" onclick="alert('Добавлено!')">Добавить</button>
