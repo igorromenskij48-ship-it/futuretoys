@@ -86,23 +86,24 @@
 </footer>
 
 <script>
-    // ВРОДЕ БЫ ТЕПЕРЬ ВСЁ НА МЕСТАХ
+    // Используем picsum.photos - они не блокируются на GitHub!
+    // Каждая картинка уникальна благодаря параметру ?random=
     const products = [
-        { name: 'Однокликерный фиджет', price: 120, img: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=400' }, // Абстракция
-        { name: 'Скребок', price: 50, img: 'https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=400' }, // Скребок
-        { name: 'Сюрикен', price: 70, img: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400' }, // Сюрикен
-        { name: 'Кастет', price: 510, img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400' }, // Кастет
-        { name: 'Кубик антистресс', price: 290, img: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400' }, // Кубик
-        { name: 'Брелок Мишка', price: 290, img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400' }, // Мишка
-        { name: 'Спиральный конус', price: 510, img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' }, // Конус
-        { name: 'Трехкликерный фиджет', price: 190, img: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=400' } // Фиджет
+        { name: 'Однокликерный фиджет', price: 120, img: 'https://picsum.photos/400/300?random=1' },
+        { name: 'Скребок', price: 50, img: 'https://picsum.photos/400/300?random=2' },
+        { name: 'Сюрикен', price: 70, img: 'https://picsum.photos/400/300?random=3' },
+        { name: 'Кастет', price: 510, img: 'https://picsum.photos/400/300?random=4' },
+        { name: 'Кубик антистресс', price: 290, img: 'https://picsum.photos/400/300?random=5' },
+        { name: 'Брелок Мишка', price: 290, img: 'https://picsum.photos/400/300?random=6' },
+        { name: 'Спиральный конус', price: 510, img: 'https://picsum.photos/400/300?random=7' },
+        { name: 'Трехкликерный фиджет', price: 190, img: 'https://picsum.photos/400/300?random=8' }
     ];
 
     const grid = document.getElementById('productGrid');
     products.forEach(p => {
         grid.innerHTML += `
             <div class="card">
-                <img src="${p.img}" alt="${p.name}">
+                <img src="${p.img}" alt="${p.name}" onerror="this.src='https://picsum.photos/400/300?random=99'">
                 <h3>${p.name}</h3>
                 <div class="price">${p.price} ₽</div>
                 <button class="add-btn" onclick="alert('Добавлено!')">Добавить</button>
