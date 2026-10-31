@@ -6,35 +6,22 @@
 <title>FutureToys | Кибер-Магазин</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-    body { background: #05050a; color: #fff; overflow-x: hidden; position: relative; }
+    body { background: #05050a; color: #fff; overflow-x: hidden; }
     
-    /* Шапка */
-    header { padding: 15px 5%; background: rgba(10, 10, 20, 0.9); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); }
-    .logo { font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900; color: #00f3ff; text-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff; cursor: pointer; letter-spacing: 2px; }
-    
+    header { padding: 15px 5%; background: rgba(10, 10, 20, 0.9); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); }
+    .logo { font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; cursor: pointer; }
     nav { display: flex; gap: 25px; }
     nav a { color: #a0a0b0; text-decoration: none; font-weight: 600; transition: 0.3s; }
-    nav a:hover { color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
-    
+    nav a:hover { color: #00f3ff; }
     .auth-buttons { display: flex; gap: 10px; align-items: center; }
     .btn { padding: 10px 22px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; border: none; font-size: 14px; text-decoration: none; }
     .btn-login { background: transparent; color: #fff; border: 1px solid #a0a0b0; }
-    .btn-login:hover { border-color: #00f3ff; color: #00f3ff; box-shadow: 0 0 15px rgba(0,243,255,0.5); }
-    .btn-register { background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; box-shadow: 0 0 15px rgba(188,19,254,0.5); }
-    .btn-register:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(188,19,254,0.8); }
-    .btn-cart { background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; position: relative; }
-    .btn-cart:hover { box-shadow: 0 0 25px rgba(0,243,255,0.8); }
-    
-    /* Кнопка Доната */
-    .btn-donate { background: linear-gradient(45deg, #ff4d4d, #ff8c00); color: #fff; box-shadow: 0 0 15px rgba(255,77,77,0.4); }
-    .btn-donate:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255,77,77,0.8); }
+    .btn-register { background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; }
+    .btn-cart { background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; }
+    .btn-donate { background: linear-gradient(45deg, #ff4d4d, #ff8c00); color: #fff; }
+    .btn-admin { background: transparent; color: #888; border: 1px solid #444; padding: 8px 15px; font-size: 12px; border-radius: 5px; }
 
-    .btn-admin { background: transparent; color: #888; border: 1px solid #444; padding: 8px 15px; font-size: 12px; border-radius: 5px; margin-right: 5px; transition: 0.3s; }
-    .btn-admin:hover { color: #00f3ff; border-color: #00f3ff; box-shadow: 0 0 10px rgba(0,243,255,0.3); }
-
-    /* Главный экран */
     .hero { text-align: center; padding: 160px 20px 100px; }
     .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 52px; color: #00f3ff; margin-bottom: 20px; text-shadow: 0 0 20px #00f3ff, 0 0 40px #bc13fe; }
     .hero p { color: #a0a0b0; font-size: 18px; margin-bottom: 30px; }
@@ -43,26 +30,23 @@
     .section-title { text-align: center; font-size: 36px; margin-bottom: 50px; font-family: 'Orbitron', sans-serif; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
     
-    .card { background: #0f0f1a; border-radius: 15px; padding: 20px; border: 1px solid #333; text-align: center; transition: 0.4s; position: relative; display: flex; flex-direction: column; }
-    .card:hover { border-color: #00f3ff; transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0,243,255,0.2); }
+    .card { background: #0f0f1a; border-radius: 15px; padding: 20px; border: 1px solid #333; text-align: center; transition: 0.3s; display: flex; flex-direction: column; }
+    .card:hover { border-color: #00f3ff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,243,255,0.2); }
     
-    /* ИСПРАВЛЕННЫЕ КАРТИНКИ */
     .card img { 
         width: 100%; 
         height: 200px; 
         object-fit: cover; 
-        object-position: center;
         border-radius: 10px; 
         border-bottom: 2px solid #333; 
-        transition: 0.4s;
-        background-color: #222; /* Фон, если картинка не загрузится */
+        margin-bottom: 15px;
+        background-color: #222;
     }
-    .card:hover img { border-color: #00f3ff; transform: scale(1.05); }
     
-    .card h3 { margin: 15px 0 5px; font-size: 18px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
-    .price { color: #bc13fe; font-size: 22px; font-weight: bold; margin: 10px 0; }
+    .card h3 { font-size: 18px; margin-bottom: 10px; min-height: 44px; }
+    .price { color: #bc13fe; font-size: 22px; font-weight: bold; margin-bottom: 15px; }
     .add-btn { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: auto; }
-    .add-btn:hover { background: rgba(0,243,255,0.1); box-shadow: 0 0 20px rgba(0,243,255,0.4); }
+    .add-btn:hover { background: rgba(0,243,255,0.1); }
 
     footer { text-align: center; padding: 40px; color: #555; border-top: 1px solid #1a1a2e; margin-top: 50px; }
 </style>
@@ -78,7 +62,7 @@
     </nav>
     <div class="auth-buttons">
         <a href="https://pay.cloudtips.ru/p/f54b9c04" target="_blank" class="btn btn-donate">❤️ Поддержать</a>
-        <button class="btn btn-admin" onclick="alert('Вход в админку (пароль admin926)')">⚙️ Админ</button>
+        <button class="btn btn-admin" onclick="alert('Пароль admin926')">⚙️ Админ</button>
         <button class="btn btn-login" onclick="alert('Вход в разработке')">Вход</button>
         <button class="btn btn-register" onclick="alert('Регистрация в разработке')">Регистрация</button>
         <button class="btn btn-cart" onclick="alert('Корзина в разработке')">Корзина (0)</button>
@@ -102,41 +86,26 @@
 </footer>
 
 <script>
-    // Строгий порядок, как на вашем скриншоте
+    // ВРОДЕ БЫ ТЕПЕРЬ ВСЁ НА МЕСТАХ
     const products = [
-        // 1. Однокликерный фиджет (Кастет/паук)
-        { name: 'Однокликерный фиджет', price: 120, img: 'https://i.ibb.co/fdStnhCJ/36f67016-04ce-4730-8e6e-fbeb761f0c0b-3.jpg' },
-        
-        // 2. Скребок (Пустая картинка на скрине, ставим заглушку, чтобы не было ошибки)
-        { name: 'Скребок', price: 50, img: 'https://i.ibb.co/b53fZnCw/36f67016-04ce-4730-8e6e-fbeb761f0c0b.jpg' },
-        
-        // 3. Сюрикен (Черный кубик на скрине)
-        { name: 'Сюрикен', price: 70, img: 'https://i.ibb.co/xSnwfMQX/36f67016-04ce-4730-8e6e-fbeb761f0c0b-6.jpg' },
-        
-        // 4. Кастет (Розовый мишка на скрине)
-        { name: 'Кастет', price: 510, img: 'https://i.ibb.co/rGN3KPc3/36f67016-04ce-4730-8e6e-fbeb761f0c0b-5.jpg' },
-        
-        // 5. Кубик антистресс (Клавиатура на скрине)
-        { name: 'Кубик антистресс', price: 290, img: 'https://i.ibb.co/Rkm6rFLL/36f67016-04ce-4730-8e6e-fbeb761f0c0b-7.jpg' },
-        
-        // 6. Брелок Мишка (Звезда на скрине)
-        { name: 'Брелок Мишка', price: 290, img: 'https://i.ibb.co/4LyttDw/36f67016-04ce-4730-8e6e-fbeb761f0c0b-2.jpg' },
-        
-        // 7. Спиральный конус (Вместо него была битая картинка, ставим спиральки)
-        { name: 'Спиральный конус', price: 510, img: 'https://i.ibb.co/6JVbMc2s/36f67016-04ce-4730-8e6e-fbeb761f0c0b-4.jpg' },
-        
-        // 8. Трехкликерный фиджет (Две спиральки на скрине)
-        { name: 'Трехкликерный фиджет', price: 190, img: 'https://i.ibb.co/mrtNRFWT/36f67016-04ce-4730-8e6e-fbeb761f0c0b-1.jpg' }
+        { name: 'Однокликерный фиджет', price: 120, img: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=400' }, // Абстракция
+        { name: 'Скребок', price: 50, img: 'https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=400' }, // Скребок
+        { name: 'Сюрикен', price: 70, img: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400' }, // Сюрикен
+        { name: 'Кастет', price: 510, img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400' }, // Кастет
+        { name: 'Кубик антистресс', price: 290, img: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400' }, // Кубик
+        { name: 'Брелок Мишка', price: 290, img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400' }, // Мишка
+        { name: 'Спиральный конус', price: 510, img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' }, // Конус
+        { name: 'Трехкликерный фиджет', price: 190, img: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=400' } // Фиджет
     ];
 
     const grid = document.getElementById('productGrid');
     products.forEach(p => {
         grid.innerHTML += `
             <div class="card">
-                <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=FutureToys'">
+                <img src="${p.img}" alt="${p.name}">
                 <h3>${p.name}</h3>
                 <div class="price">${p.price} ₽</div>
-                <button class="add-btn" onclick="alert('Добавлено в корзину!')">Добавить</button>
+                <button class="add-btn" onclick="alert('Добавлено!')">Добавить</button>
             </div>
         `;
     });
