@@ -9,7 +9,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background: #05050a; color: #fff; overflow-x: hidden; }
     
-    /* Шапка */
     header { padding: 15px 5%; background: rgba(10, 10, 20, 0.9); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); flex-wrap: wrap; gap: 15px; }
     .logo { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; cursor: pointer; }
     
@@ -26,7 +25,6 @@
     .btn-register { background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; }
     .btn-cart { background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; }
 
-    /* Главный экран и Каталог */
     .hero { text-align: center; padding: 160px 20px 60px; }
     .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 42px; color: #00f3ff; margin-bottom: 15px; text-shadow: 0 0 20px #00f3ff; }
     .hero p { color: #a0a0b0; font-size: 16px; }
@@ -43,7 +41,6 @@
     .add-btn { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 10px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.3s; margin-top: auto; }
     .add-btn:hover { background: rgba(0,243,255,0.1); }
 
-    /* Корзина */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 400; display: none; opacity: 0; transition: 0.3s; }
     .cart-overlay.open { display: block; opacity: 1; }
     .cart-panel { position: fixed; right: -100%; top: 0; width: 100%; max-width: 400px; height: 100%; background: #0f0f1a; z-index: 500; display: flex; flex-direction: column; transition: 0.4s; box-shadow: -10px 0 30px rgba(0,0,0,0.8); border-left: 1px solid #00f3ff; }
@@ -64,7 +61,6 @@
     .promo-box button { padding: 10px 15px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     .checkout-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; }
 
-    /* Модалки */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 600; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
     .modal-content { background: #0f0f1a; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #00f3ff; text-align: center; position: relative; }
     .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #a0a0b0; font-size: 24px; cursor: pointer; }
@@ -74,7 +70,6 @@
     .modal input { width: 100%; padding: 12px; margin-bottom: 12px; background: #05050a; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; }
     .confirm-btn { width: 100%; padding: 15px; background: #bc13fe; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; }
 
-    /* Подвал */
     footer { text-align: center; padding: 40px 20px; color: #555; border-top: 1px solid #1a1a2e; margin-top: 50px; }
     footer p { margin-bottom: 10px; }
     .admin-link { color: #333; cursor: pointer; font-size: 13px; margin-top: 10px; display: inline-block; transition: 0.3s; }
@@ -84,15 +79,17 @@
     .info-section h2 { color: #00f3ff; margin-bottom: 15px; font-family: 'Orbitron'; }
     .info-section p { color: #a0a0b0; max-width: 600px; margin: 0 auto; line-height: 1.6; }
 
-    /* АДМИН ПАНЕЛЬ (ОКНО НА ВЕСЬ ЭКРАН) */
     #adminPanelFull { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05050a; z-index: 1000; overflow-y: auto; padding: 20px; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; padding-bottom: 20px; margin-bottom: 20px; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; padding-bottom: 20px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
     .admin-header h1 { color: #00f3ff; font-family: 'Orbitron'; font-size: 24px; }
-    .admin-close-btn { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    
+    .admin-controls { display: flex; gap: 10px; }
+    .admin-close-btn { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .admin-close-btn:hover { background: #cc0000; }
     
     .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
     .order-card { background: #0f0f1a; border: 1px solid #333; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; position: relative; }
-    .order-card.completed { border-color: #00ff88; opacity: 0.7; }
+    .order-card.completed { border-color: #00ff88; opacity: 0.8; }
     .order-card.completed::after { content: '✅ ВЫПОЛНЕН'; position: absolute; top: 10px; right: 10px; color: #00ff88; font-weight: bold; font-size: 12px; }
     
     .order-code { color: #bc13fe; font-family: 'Orbitron'; font-size: 18px; font-weight: bold; margin-bottom: 10px; }
@@ -108,7 +105,6 @@
     
     .no-orders { color: #a0a0b0; text-align: center; width: 100%; margin-top: 50px; font-size: 18px; }
 
-    /* МОИ ЗАКАЗЫ (ПОЛЬЗОВАТЕЛЬСКИЕ) */
     .user-order-card { background: #0f0f1a; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
     .user-order-card .status-processing { color: #ffd700; font-weight: bold; }
     .user-order-card .status-done { color: #00ff88; font-weight: bold; }
@@ -134,7 +130,6 @@
         <a href="#about">О нас</a>
         <a href="#catalog">Игрушки</a>
         <a href="#contacts">Контакты</a>
-        <!-- Кнопка Мои заказы -->
         <button class="btn-my-orders" onclick="openMyOrders()">Мои заказы</button>
     </div>
     <div class="header-actions">
@@ -177,7 +172,6 @@
     </div>
 </div>
 
-<!-- МОДАЛКА ОПЛАТЫ -->
 <div class="modal" id="paymentModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('paymentModal').style.display='none'">&times;</button>
@@ -193,7 +187,6 @@
     </div>
 </div>
 
-<!-- МОДАЛКА ВХОДА/РЕГИСТРАЦИИ -->
 <div class="modal" id="authModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('authModal').style.display='none'">&times;</button>
@@ -205,7 +198,6 @@
     </div>
 </div>
 
-<!-- МОДАЛКА МОИХ ЗАКАЗОВ (ПОЛЬЗОВАТЕЛЬ) -->
 <div class="modal" id="myOrdersModal">
     <div class="modal-content" style="max-width: 600px; text-align: left;">
         <button class="close-modal" onclick="document.getElementById('myOrdersModal').style.display='none'">&times;</button>
@@ -214,7 +206,6 @@
     </div>
 </div>
 
-<!-- МОДАЛКА ВВОДА ПАРОЛЯ АДМИНА -->
 <div class="modal" id="adminLoginModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('adminLoginModal').style.display='none'">&times;</button>
@@ -224,11 +215,10 @@
     </div>
 </div>
 
-<!-- ПОЛНОЭКРАННАЯ АДМИН ПАНЕЛЬ -->
 <div id="adminPanelFull">
     <div class="admin-header">
-        <h1>Управление заказами</h1>
-        <button class="admin-close-btn" onclick="document.getElementById('adminPanelFull').style.display='none'">Закрыть</button>
+        <h1>Управление заказами <span style="font-size: 14px; color: #a0a0b0; margin-left: 10px;">(Авто-обновление)</span></h1>
+        <button class="admin-close-btn" onclick="closeAdminPanel()">Закрыть</button>
     </div>
     <div class="orders-grid" id="adminOrdersGrid"></div>
 </div>
@@ -258,6 +248,7 @@
     let cart = [];
     let discount = 0;
     let currentOrderCode = '';
+    let adminInterval = null; // Переменная для таймера обновления
 
     const grid = document.getElementById('productGrid');
     products.forEach(p => {
@@ -364,7 +355,7 @@
             sum: Math.round(total),
             items: cart.map(i => `${i.name} (x${i.qty})`).join(', '),
             date: new Date().toLocaleString('ru-RU'),
-            status: 'new' // Новый заказ (в обработке)
+            status: 'new'
         });
         localStorage.setItem('futuretoys_orders', JSON.stringify(orders));
 
@@ -389,7 +380,6 @@
         }
     }
 
-    // --- МОИ ЗАКАЗЫ (ПОЛЬЗОВАТЕЛЬ) ---
     function openMyOrders() {
         const list = document.getElementById('myOrdersList');
         let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
@@ -415,7 +405,7 @@
         document.getElementById('myOrdersModal').style.display = 'flex';
     }
 
-    // --- АДМИН ПАНЕЛЬ ---
+    // --- АДМИН ПАНЕЛЬ С АВТО-ОБНОВЛЕНИЕМ ---
     function openAdminLogin() {
         document.getElementById('adminLoginModal').style.display = 'flex';
         document.getElementById('adminPassword').value = '';
@@ -425,16 +415,35 @@
         const pass = document.getElementById('adminPassword').value;
         if (pass === 'admin009') {
             document.getElementById('adminLoginModal').style.display = 'none';
-            renderAdminOrders();
             document.getElementById('adminPanelFull').style.display = 'block';
+            
+            // Запускаем немедленную отрисовку
+            renderAdminOrders();
+            
+            // Запускаем авто-обновление каждые 2 секунды
+            if (adminInterval) clearInterval(adminInterval);
+            adminInterval = setInterval(() => {
+                renderAdminOrders();
+            }, 2000);
+            
         } else {
             alert('❌ Неверный пароль!');
         }
     }
 
+    function closeAdminPanel() {
+        document.getElementById('adminPanelFull').style.display = 'none';
+        if (adminInterval) {
+            clearInterval(adminInterval);
+            adminInterval = null;
+        }
+    }
+
     function renderAdminOrders() {
         const ordersGrid = document.getElementById('adminOrdersGrid');
-        const orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
+        // Всегда берем свежие данные
+        const ordersStr = localStorage.getItem('futuretoys_orders');
+        const orders = ordersStr ? JSON.parse(ordersStr) : [];
         
         if (orders.length === 0) {
             ordersGrid.innerHTML = '<div class="no-orders">Заказов пока нет 😔</div>';
@@ -464,7 +473,7 @@
         if (orderIndex > -1) {
             orders[orderIndex].status = 'done';
             localStorage.setItem('futuretoys_orders', JSON.stringify(orders));
-            renderAdminOrders();
+            renderAdminOrders(); // Мгновенно обновляем
         }
     }
 
@@ -473,7 +482,7 @@
         let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
         orders = orders.filter(o => o.id !== id);
         localStorage.setItem('futuretoys_orders', JSON.stringify(orders));
-        renderAdminOrders();
+        renderAdminOrders(); // Мгновенно обновляем
     }
 </script>
 
