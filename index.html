@@ -9,11 +9,9 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background: #05050a; color: #fff; overflow-x: hidden; }
     
-    /* Шапка */
     header { padding: 15px 5%; background: rgba(10, 10, 20, 0.9); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); flex-wrap: wrap; gap: 15px; }
     .logo { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; cursor: pointer; }
     
-    /* Ссылки в шапке */
     .nav-links { display: flex; gap: 20px; }
     .nav-links a { color: #a0a0b0; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
     .nav-links a:hover { color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
@@ -25,12 +23,10 @@
     .btn-register { background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; }
     .btn-cart { background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; }
 
-    /* Главный экран */
     .hero { text-align: center; padding: 160px 20px 60px; }
     .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 42px; color: #00f3ff; margin-bottom: 15px; text-shadow: 0 0 20px #00f3ff; }
     .hero p { color: #a0a0b0; font-size: 16px; }
 
-    /* Каталог */
     .catalog { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
     .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; font-family: 'Orbitron', sans-serif; color: #fff; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
@@ -44,7 +40,6 @@
     .add-btn { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 10px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.3s; margin-top: auto; }
     .add-btn:hover { background: rgba(0,243,255,0.1); }
 
-    /* Корзина */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 400; display: none; opacity: 0; transition: 0.3s; }
     .cart-overlay.open { display: block; opacity: 1; }
     .cart-panel { position: fixed; right: -100%; top: 0; width: 100%; max-width: 400px; height: 100%; background: #0f0f1a; z-index: 500; display: flex; flex-direction: column; transition: 0.4s; box-shadow: -10px 0 30px rgba(0,0,0,0.8); border-left: 1px solid #00f3ff; }
@@ -65,7 +60,6 @@
     .promo-box button { padding: 10px 15px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     .checkout-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; }
 
-    /* Модалки */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 600; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
     .modal-content { background: #0f0f1a; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #00f3ff; text-align: center; position: relative; }
     .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #a0a0b0; font-size: 24px; cursor: pointer; }
@@ -75,13 +69,11 @@
     .modal input { width: 100%; padding: 12px; margin-bottom: 12px; background: #05050a; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; }
     .confirm-btn { width: 100%; padding: 15px; background: #bc13fe; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; }
 
-    /* Подвал */
     footer { text-align: center; padding: 40px 20px; color: #555; border-top: 1px solid #1a1a2e; margin-top: 50px; }
     footer p { margin-bottom: 10px; }
     .admin-link { color: #333; cursor: pointer; font-size: 13px; margin-top: 10px; display: inline-block; transition: 0.3s; }
     .admin-link:hover { color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
 
-    /* Секции (О нас, Контакты) */
     .info-section { padding: 40px 20px; text-align: center; background: #080810; }
     .info-section h2 { color: #00f3ff; margin-bottom: 15px; font-family: 'Orbitron'; }
     .info-section p { color: #a0a0b0; max-width: 600px; margin: 0 auto; line-height: 1.6; }
@@ -103,7 +95,6 @@
 <header>
     <div class="logo" onclick="window.scrollTo(0,0)">FutureToys</div>
     
-    <!-- ССЫЛКИ ВЕРНУЛИСЬ -->
     <div class="nav-links">
         <a href="#about">О нас</a>
         <a href="#catalog">Игрушки</a>
@@ -123,19 +114,16 @@
     <p>Уникальные 3D-модели, напечатанные на 3D-принтере.</p>
 </div>
 
-<!-- СЕКЦИЯ О НАС -->
 <div class="info-section" id="about" style="background: #0f0f1a; border-top: 1px solid #333; border-bottom: 1px solid #333;">
     <h2>О нас</h2>
     <p>Мы создаем уникальные 3D-игрушки из экологичного пластика. Каждая модель — это результат кропотливой работы дизайнеров и высокоточных принтеров.</p>
 </div>
 
-<!-- КАТАЛОГ -->
 <div class="catalog" id="catalog">
     <h2 class="section-title">Наш Каталог</h2>
     <div class="grid" id="productGrid"></div>
 </div>
 
-<!-- КОРЗИНА -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-panel" id="cartPanel">
     <div class="cart-header">
@@ -153,7 +141,6 @@
     </div>
 </div>
 
-<!-- МОДАЛКА ОПЛАТЫ -->
 <div class="modal" id="paymentModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('paymentModal').style.display='none'">&times;</button>
@@ -169,7 +156,6 @@
     </div>
 </div>
 
-<!-- МОДАЛКА ВХОДА/РЕГИСТРАЦИИ -->
 <div class="modal" id="authModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('authModal').style.display='none'">&times;</button>
@@ -181,7 +167,17 @@
     </div>
 </div>
 
-<!-- СЕКЦИЯ КОНТАКТЫ И ПОДВАЛ -->
+<!-- МОДАЛЬНОЕ ОКНО АДМИНА (НОВОЕ) -->
+<div class="modal" id="adminModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="document.getElementById('adminModal').style.display='none'">&times;</button>
+        <h2 style="margin-bottom: 20px; color: #00f3ff; font-family: 'Orbitron';">Админ-Панель</h2>
+        <p style="color: #a0a0b0; font-size: 14px; margin-bottom: 15px;">Введите пароль для доступа</p>
+        <input type="password" id="adminPassword" placeholder="Пароль" style="text-align: center; letter-spacing: 2px;">
+        <button class="confirm-btn" onclick="checkAdminPassword()">Войти</button>
+    </div>
+</div>
+
 <footer id="contacts">
     <div style="margin-bottom: 20px;">
         <h2 style="color: #00f3ff; font-family: 'Orbitron'; margin-bottom: 15px;">Контакты</h2>
@@ -189,9 +185,7 @@
         <p>📱 Телефон: <span style="color: #00f3ff;">+7 (926) 297-81-24</span></p>
     </div>
     <p>&copy; 2024 Игрушки из Будущего. Все права защищены.</p>
-    
-    <!-- АДМИН В ПОДВАЛЕ, ПАРОЛЬ admin009 -->
-    <span class="admin-link" onclick="openAdminLogin()">⚙️ Панель администратора</span>
+    <span class="admin-link" onclick="openAdminPanel()">⚙️ Панель администратора</span>
 </footer>
 
 <script>
@@ -338,17 +332,31 @@
         }
     }
 
-    function openAdminLogin() {
-        let pass = prompt('Введите пароль администратора:');
+    // --- НОВАЯ ЛОГИКА АДМИНКИ С КРАСИВЫМ ОКНОМ ---
+    function openAdminPanel() {
+        document.getElementById('adminModal').style.display = 'flex';
+        document.getElementById('adminPassword').value = ''; // Очищаем поле
+    }
+
+    function checkAdminPassword() {
+        const pass = document.getElementById('adminPassword').value;
         if (pass === 'admin009') {
+            document.getElementById('adminModal').style.display = 'none';
+            
+            // Показываем заказы
             let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
-            if (orders.length === 0) { alert('✅ Вы вошли в админ-панель.\nЗаказов пока нет.'); }
-            else {
+            if (orders.length === 0) { 
+                alert('✅ Вы вошли в админ-панель.\nЗаказов пока нет.'); 
+            } else {
                 let msg = "✅ Вы вошли в админ-панель.\n\nПоследние заказы:\n";
-                orders.slice(0, 5).forEach(o => { msg += `\nКод: ${o.code} | Сумма: ${o.sum}₽\nКлиент: ${o.name} (${o.phone})\n`; });
+                orders.slice(0, 5).forEach(o => { 
+                    msg += `\nКод: ${o.code} | Сумма: ${o.sum}₽\nКлиент: ${o.name} (${o.phone})\nТовары: ${o.items}\n`; 
+                });
                 alert(msg);
             }
-        } else { alert('❌ Неверный пароль!'); }
+        } else {
+            alert('❌ Неверный пароль!');
+        }
     }
 </script>
 
