@@ -24,6 +24,9 @@
     .btn-login { background: transparent; color: #fff; border: 1px solid #a0a0b0; }
     .btn-register { background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; }
     .btn-cart { background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; }
+    .btn-logout { background: transparent; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 16px; border-radius: 30px; font-weight: bold; font-size: 13px; cursor: pointer; }
+
+    .user-greeting { color: #00f3ff; font-weight: bold; margin-right: 10px; text-shadow: 0 0 10px #00f3ff; }
 
     .hero { text-align: center; padding: 160px 20px 60px; }
     .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 42px; color: #00f3ff; margin-bottom: 15px; text-shadow: 0 0 20px #00f3ff; }
@@ -82,10 +85,7 @@
     #adminPanelFull { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05050a; z-index: 1000; overflow-y: auto; padding: 20px; }
     .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; padding-bottom: 20px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
     .admin-header h1 { color: #00f3ff; font-family: 'Orbitron'; font-size: 24px; }
-    
-    .admin-controls { display: flex; gap: 10px; }
     .admin-close-btn { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-    .admin-close-btn:hover { background: #cc0000; }
     
     .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
     .order-card { background: #0f0f1a; border: 1px solid #333; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; position: relative; }
@@ -132,11 +132,8 @@
         <a href="#contacts">Контакты</a>
         <button class="btn-my-orders" onclick="openMyOrders()">Мои заказы</button>
     </div>
-    <div class="header-actions">
-        <a href="https://pay.cloudtips.ru/p/f54b9c04" target="_blank" class="btn btn-donate">Поддержать</a>
-        <button class="btn btn-login" onclick="openAuth('login')">Вход</button>
-        <button class="btn btn-register" onclick="openAuth('register')">Регистрация</button>
-        <button class="btn btn-cart" onclick="toggleCart()">Корзина (<span id="cartCount">0</span>)</button>
+    <div class="header-actions" id="headerActions">
+        <!-- Сюда будет вставляться либо кнопка Вход/Регистрация, либо имя пользователя -->
     </div>
 </header>
 
@@ -187,14 +184,21 @@
     </div>
 </div>
 
+<!-- Модалка входа/регистрации -->
 <div class="modal" id="authModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('authModal').style.display='none'">&times;</button>
         <h2 id="authTitle" style="margin-bottom: 20px; color: #00f3ff; font-family: 'Orbitron';">Вход</h2>
-        <div id="registerFields" style="display: none;"><input type="text" placeholder="Ваше Имя"></div>
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Пароль">
-        <button class="confirm-btn" id="authBtn" onclick="alert('Демо-версия.')">Войти</button>
+        
+        <!-- Поля для регистрации (скрыты при входе) -->
+        <div id="registerFields" style="display: none;">
+            <input type="text" id="regName" placeholder="Ваше Имя">
+        </div>
+        
+        <input type="email" id="authEmail" placeholder="Email">
+        <input type="password" id="authPassword" placeholder="Пароль">
+        
+        <button class="confirm-btn" id="authBtn" onclick="submitAuth()">Войти</button>
     </div>
 </div>
 
@@ -234,6 +238,7 @@
 </footer>
 
 <script>
+    // ================= ДАННЫЕ =================
     const products = [
         { id: 1, name: 'Однокликерный фиджет', price: 120, img: '1.jpg' },
         { id: 2, name: 'Скребок', price: 50, img: '2.jpg' },
@@ -248,8 +253,9 @@
     let cart = [];
     let discount = 0;
     let currentOrderCode = '';
-    let adminInterval = null; // Переменная для таймера обновления
+    let adminInterval = null;
 
+    // ================= КАТАЛОГ =================
     const grid = document.getElementById('productGrid');
     products.forEach(p => {
         grid.innerHTML += `
@@ -262,6 +268,98 @@
         `;
     });
 
+    // ================= АВТОРИЗАЦИЯ =================
+    function renderAuthButtons() {
+        const container = document.getElementById('headerActions');
+        const currentUser = localStorage.getItem('futuretoys_current_user');
+        
+        let html = `
+            <a href="https://pay.cloudtips.ru/p/f54b9c04" target="_blank" class="btn btn-donate">Поддержать</a>
+        `;
+
+        if (currentUser) {
+            html += `
+                <span class="user-greeting">Привет, ${currentUser}!</span>
+                <button class="btn-logout" onclick="logout()">Выйти</button>
+            `;
+        } else {
+            html += `
+                <button class="btn btn-login" onclick="openAuth('login')">Вход</button>
+                <button class="btn btn-register" onclick="openAuth('register')">Регистрация</button>
+            `;
+        }
+
+        html += `<button class="btn btn-cart" onclick="toggleCart()">Корзина (<span id="cartCount">0</span>)</button>`;
+        
+        container.innerHTML = html;
+        updateCartUI(); // Обновляем счетчик
+    }
+
+    function openAuth(type) {
+        document.getElementById('authModal').style.display = 'flex';
+        const title = document.getElementById('authTitle');
+        const regFields = document.getElementById('registerFields');
+        const btn = document.getElementById('authBtn');
+
+        if (type === 'login') {
+            title.innerText = 'Вход';
+            regFields.style.display = 'none';
+            btn.innerText = 'Войти';
+        } else {
+            title.innerText = 'Регистрация';
+            regFields.style.display = 'block';
+            btn.innerText = 'Зарегистрироваться';
+        }
+    }
+
+    function submitAuth() {
+        const email = document.getElementById('authEmail').value.trim();
+        const pass = document.getElementById('authPassword').value.trim();
+        const isRegister = document.getElementById('registerFields').style.display === 'block';
+        
+        if (!email || !pass) { alert('Заполните Email и Пароль!'); return; }
+
+        let users = JSON.parse(localStorage.getItem('futuretoys_users') || '[]');
+
+        if (isRegister) {
+            const name = document.getElementById('regName').value.trim();
+            if (!name) { alert('Введите имя!'); return; }
+            
+            if (users.find(u => u.email === email)) {
+                alert('Пользователь с таким Email уже существует!');
+                return;
+            }
+
+            users.push({ name, email, password: pass });
+            localStorage.setItem('futuretoys_users', JSON.stringify(users));
+            localStorage.setItem('futuretoys_current_user', name);
+            
+            alert(`Добро пожаловать, ${name}!`);
+        } else {
+            const user = users.find(u => u.email === email && u.password === pass);
+            if (!user) {
+                alert('Неверный Email или Пароль!');
+                return;
+            }
+            localStorage.setItem('futuretoys_current_user', user.name);
+            alert(`С возвращением, ${user.name}!`);
+        }
+
+        document.getElementById('authModal').style.display = 'none';
+        document.getElementById('authEmail').value = '';
+        document.getElementById('authPassword').value = '';
+        if (document.getElementById('regName')) document.getElementById('regName').value = '';
+        
+        renderAuthButtons();
+    }
+
+    function logout() {
+        localStorage.removeItem('futuretoys_current_user');
+        renderAuthButtons();
+        alert('Вы вышли из аккаунта.');
+    }
+
+    // ================= КОРЗИНА =================
     function toggleCart() {
         document.getElementById('cartPanel').classList.toggle('open');
         document.getElementById('cartOverlay').classList.toggle('open');
@@ -289,6 +387,8 @@
         const countEl = document.getElementById('cartCount');
         const totalEl = document.getElementById('totalPrice');
         
+        if (!countEl || !totalEl) return; // Если кнопки еще не отрисованы
+
         list.innerHTML = '';
         let total = 0;
         let count = 0;
@@ -326,6 +426,7 @@
         }
     }
 
+    // ================= ОФОРМЛЕНИЕ ЗАКАЗА =================
     function openPayment() {
         if (cart.length === 0) { alert('Корзина пуста!'); return; }
         currentOrderCode = 'FT-' + Math.random().toString(36).substring(2, 6).toUpperCase();
@@ -368,18 +469,6 @@
         updateCartUI();
     }
 
-    function openAuth(type) {
-        document.getElementById('authModal').style.display = 'flex';
-        const title = document.getElementById('authTitle');
-        const regFields = document.getElementById('registerFields');
-        const btn = document.getElementById('authBtn');
-        if (type === 'login') {
-            title.innerText = 'Вход'; regFields.style.display = 'none'; btn.innerText = 'Войти';
-        } else {
-            title.innerText = 'Регистрация'; regFields.style.display = 'block'; btn.innerText = 'Зарегистрироваться';
-        }
-    }
-
     function openMyOrders() {
         const list = document.getElementById('myOrdersList');
         let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
@@ -405,7 +494,7 @@
         document.getElementById('myOrdersModal').style.display = 'flex';
     }
 
-    // --- АДМИН ПАНЕЛЬ С АВТО-ОБНОВЛЕНИЕМ ---
+    // ================= АДМИН ПАНЕЛЬ =================
     function openAdminLogin() {
         document.getElementById('adminLoginModal').style.display = 'flex';
         document.getElementById('adminPassword').value = '';
@@ -417,10 +506,7 @@
             document.getElementById('adminLoginModal').style.display = 'none';
             document.getElementById('adminPanelFull').style.display = 'block';
             
-            // Запускаем немедленную отрисовку
             renderAdminOrders();
-            
-            // Запускаем авто-обновление каждые 2 секунды
             if (adminInterval) clearInterval(adminInterval);
             adminInterval = setInterval(() => {
                 renderAdminOrders();
@@ -441,7 +527,6 @@
 
     function renderAdminOrders() {
         const ordersGrid = document.getElementById('adminOrdersGrid');
-        // Всегда берем свежие данные
         const ordersStr = localStorage.getItem('futuretoys_orders');
         const orders = ordersStr ? JSON.parse(ordersStr) : [];
         
@@ -473,7 +558,7 @@
         if (orderIndex > -1) {
             orders[orderIndex].status = 'done';
             localStorage.setItem('futuretoys_orders', JSON.stringify(orders));
-            renderAdminOrders(); // Мгновенно обновляем
+            renderAdminOrders();
         }
     }
 
@@ -482,8 +567,11 @@
         let orders = JSON.parse(localStorage.getItem('futuretoys_orders') || '[]');
         orders = orders.filter(o => o.id !== id);
         localStorage.setItem('futuretoys_orders', JSON.stringify(orders));
-        renderAdminOrders(); // Мгновенно обновляем
+        renderAdminOrders();
     }
+
+    // ================= ЗАПУСК =================
+    renderAuthButtons(); // Рисуем шапку при загрузке
 </script>
 
 </body>
