@@ -9,11 +9,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background: #05050a; color: #fff; overflow-x: hidden; }
     
-    header { padding: 15px 5%; background: rgba(10, 10, 20, 0.9); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); flex-wrap: wrap; gap: 10px; }
+    /* Шапка */
+    header { padding: 15px 5%; background: rgba(10, 10, 20, 0.9); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #00f3ff; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); flex-wrap: wrap; gap: 15px; }
     .logo { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; cursor: pointer; }
-    .nav-links { display: flex; gap: 15px; }
+    
+    /* Ссылки в шапке */
+    .nav-links { display: flex; gap: 20px; }
     .nav-links a { color: #a0a0b0; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
-    .nav-links a:hover { color: #00f3ff; }
+    .nav-links a:hover { color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
 
     .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .btn { padding: 8px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; border: none; font-size: 13px; text-decoration: none; white-space: nowrap; }
@@ -22,10 +25,12 @@
     .btn-register { background: linear-gradient(45deg, #bc13fe, #7a00ff); color: #fff; }
     .btn-cart { background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; }
 
+    /* Главный экран */
     .hero { text-align: center; padding: 160px 20px 60px; }
     .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 42px; color: #00f3ff; margin-bottom: 15px; text-shadow: 0 0 20px #00f3ff; }
     .hero p { color: #a0a0b0; font-size: 16px; }
 
+    /* Каталог */
     .catalog { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
     .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; font-family: 'Orbitron', sans-serif; color: #fff; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
@@ -39,6 +44,7 @@
     .add-btn { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 10px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.3s; margin-top: auto; }
     .add-btn:hover { background: rgba(0,243,255,0.1); }
 
+    /* Корзина */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 400; display: none; opacity: 0; transition: 0.3s; }
     .cart-overlay.open { display: block; opacity: 1; }
     .cart-panel { position: fixed; right: -100%; top: 0; width: 100%; max-width: 400px; height: 100%; background: #0f0f1a; z-index: 500; display: flex; flex-direction: column; transition: 0.4s; box-shadow: -10px 0 30px rgba(0,0,0,0.8); border-left: 1px solid #00f3ff; }
@@ -59,6 +65,7 @@
     .promo-box button { padding: 10px 15px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     .checkout-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, #00f3ff, #0088ff); color: #0a0a12; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; }
 
+    /* Модалки */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 600; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
     .modal-content { background: #0f0f1a; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #00f3ff; text-align: center; position: relative; }
     .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #a0a0b0; font-size: 24px; cursor: pointer; }
@@ -68,13 +75,20 @@
     .modal input { width: 100%; padding: 12px; margin-bottom: 12px; background: #05050a; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; }
     .confirm-btn { width: 100%; padding: 15px; background: #bc13fe; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; }
 
+    /* Подвал */
     footer { text-align: center; padding: 40px 20px; color: #555; border-top: 1px solid #1a1a2e; margin-top: 50px; }
     footer p { margin-bottom: 10px; }
     .admin-link { color: #333; cursor: pointer; font-size: 13px; margin-top: 10px; display: inline-block; transition: 0.3s; }
     .admin-link:hover { color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
 
+    /* Секции (О нас, Контакты) */
+    .info-section { padding: 40px 20px; text-align: center; background: #080810; }
+    .info-section h2 { color: #00f3ff; margin-bottom: 15px; font-family: 'Orbitron'; }
+    .info-section p { color: #a0a0b0; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
     @media (max-width: 768px) {
         header { flex-direction: column; align-items: flex-start; }
+        .nav-links { width: 100%; justify-content: space-around; margin-top: 10px; }
         .header-actions { width: 100%; justify-content: space-between; margin-top: 10px; }
         .hero h1 { font-size: 28px; }
         .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -88,11 +102,14 @@
 
 <header>
     <div class="logo" onclick="window.scrollTo(0,0)">FutureToys</div>
+    
+    <!-- ССЫЛКИ ВЕРНУЛИСЬ -->
     <div class="nav-links">
         <a href="#about">О нас</a>
         <a href="#catalog">Игрушки</a>
         <a href="#contacts">Контакты</a>
     </div>
+    
     <div class="header-actions">
         <a href="https://pay.cloudtips.ru/p/f54b9c04" target="_blank" class="btn btn-donate">Поддержать</a>
         <button class="btn btn-login" onclick="openAuth('login')">Вход</button>
@@ -106,11 +123,19 @@
     <p>Уникальные 3D-модели, напечатанные на 3D-принтере.</p>
 </div>
 
+<!-- СЕКЦИЯ О НАС -->
+<div class="info-section" id="about" style="background: #0f0f1a; border-top: 1px solid #333; border-bottom: 1px solid #333;">
+    <h2>О нас</h2>
+    <p>Мы создаем уникальные 3D-игрушки из экологичного пластика. Каждая модель — это результат кропотливой работы дизайнеров и высокоточных принтеров.</p>
+</div>
+
+<!-- КАТАЛОГ -->
 <div class="catalog" id="catalog">
     <h2 class="section-title">Наш Каталог</h2>
     <div class="grid" id="productGrid"></div>
 </div>
 
+<!-- КОРЗИНА -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-panel" id="cartPanel">
     <div class="cart-header">
@@ -128,6 +153,7 @@
     </div>
 </div>
 
+<!-- МОДАЛКА ОПЛАТЫ -->
 <div class="modal" id="paymentModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('paymentModal').style.display='none'">&times;</button>
@@ -143,6 +169,7 @@
     </div>
 </div>
 
+<!-- МОДАЛКА ВХОДА/РЕГИСТРАЦИИ -->
 <div class="modal" id="authModal">
     <div class="modal-content">
         <button class="close-modal" onclick="document.getElementById('authModal').style.display='none'">&times;</button>
@@ -154,14 +181,20 @@
     </div>
 </div>
 
+<!-- СЕКЦИЯ КОНТАКТЫ И ПОДВАЛ -->
 <footer id="contacts">
-    <p>&copy; 2024 Игрушки из Будущего.</p>
-    <p>📧 igorromenskij48@gmail.com | 📱 +7 (926) 297-81-24</p>
+    <div style="margin-bottom: 20px;">
+        <h2 style="color: #00f3ff; font-family: 'Orbitron'; margin-bottom: 15px;">Контакты</h2>
+        <p>📧 Email: <a href="mailto:igorromenskij48@gmail.com" style="color: #00f3ff;">igorromenskij48@gmail.com</a></p>
+        <p>📱 Телефон: <span style="color: #00f3ff;">+7 (926) 297-81-24</span></p>
+    </div>
+    <p>&copy; 2024 Игрушки из Будущего. Все права защищены.</p>
+    
+    <!-- АДМИН В ПОДВАЛЕ, ПАРОЛЬ admin009 -->
     <span class="admin-link" onclick="openAdminLogin()">⚙️ Панель администратора</span>
 </footer>
 
 <script>
-    // ТОВАРЫ С ВАШИМИ КАРТИНКАМИ
     const products = [
         { id: 1, name: 'Однокликерный фиджет', price: 120, img: '1.jpg' },
         { id: 2, name: 'Скребок', price: 50, img: '2.jpg' },
